@@ -4,24 +4,22 @@
     <q-page  class="ma-y-40  vertical-align" >
       <q-card class="my-card semidark-bg br-primary pa-interior">
       <q-card-section class=" q-pa-none">
-        <p class="font-regular text-white text-center">Department</p>
-          <div class="q-mt-md">
+        <p class="font-regular text-white text-center ">Department</p>
+          <div class="q-mt-md q-px-md">
             <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6 " no-caps  align="center" :label="this.dept" icon="" dropdown-icon='none'>
-              <q-list separator bordered class="br-primary">
-              <q-list separator bordered class="br-primary">
+              <q-list separator  class="br-primary">
                 <q-item clickable v-close-popup @click="onItemClick" class="button" v-for="item in dept_list" :key="item">
                   <q-item-section >
                     <q-item-label>{{item}}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
-              </q-list>
             </q-btn-dropdown>
           </div>
         <p class="font-regular text-white text-center" style="margin-top:18px;" >Name</p>
-          <div class="q-mt-md ">
+          <div class="q-mt-md q-px-md">
             <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6" no-caps  align="center" :label=this.name icon="" dropdown-icon='none' >
-              <q-list separator bordered class="br-primary">
+              <q-list separator class="br-primary">
                 <q-item clickable v-close-popup @click="onItemClick" class="button" v-for="item in dept" :key="item">
                   <q-item-section >
                     <q-item-label>{{item}}</q-item-label>

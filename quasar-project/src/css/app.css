@@ -120,7 +120,7 @@ select {
     /* border radius */
 
     --br-10: 10px;
-
+    --br--5: 5px;
 
     /* padding */
 
@@ -156,6 +156,10 @@ select {
 
 .br-primary{
     border-radius: var(--br-10);
+}
+
+.br-secondary{
+    border-radius: var(--br--5);
 }
 
 .pa-interior{

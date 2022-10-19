@@ -2,10 +2,12 @@
 const routes = [
   {
     path: '/',
-    redirect:'/login',
+
     component: () => import('src/layouts/AuthLayout.vue'),
     children: [
-      { path: '/login', component: () => import('src/pages/LoginPage.vue') }
+      { path: '/', component: () => import('src/pages/HomePage.vue') },
+      { path: '/login', component: () => import('src/pages/admin/LoginPage.vue') },
+      { path: '/signin', component: () => import('src/pages/admin/SignIn.vue') }
     ]
   },
 
