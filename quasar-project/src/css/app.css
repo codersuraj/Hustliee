@@ -101,15 +101,76 @@ select {
     --fs--12: 0.75rem;
     --fs--10:0.625rem;
     --fs--8: 0.5rem;
+    --fs--18:1.125rem;
 
 
     /* Font Weight */
 
     --fw--regular: 400;
     --fw--medium: 500;
-    --fs--semibold: 600;
-    --fs--bold: 700;
+    --fw--semibold: 600;
+    --fw--bold: 700;
+
+
+    /* margin */
+
+    --ma-40: 40px;
+
+
+    /* border radius */
+
+    --br-10: 10px;
+
+
+    /* padding */
+
+    --pa-35: 35px;
+    --pa-45: 45px;
 
 }
 
 /* Utility Clases */
+
+
+.fw-bold{
+    font-weight: var(--fw--bold);
+}
+.bg-prime{
+    background-color: var(--primary);
+}
+.dark-bg{
+    background-color: var(--black--dark);
+}
+
+.grey-bg{
+    background-color: var(--grey--regular);
+}
+
+.semidark-bg{
+    background-color: var(--black--semidark);
+}
+
+.ma-y-40{
+    margin-inline: var(--ma-40);
+}
+
+.br-primary{
+    border-radius: var(--br-10);
+}
+
+.pa-interior{
+    padding-inline: var(--pa-45);
+    padding-block: var(--pa-35);
+}
+
+.font-regular{
+    font-size: var(--fs--14);
+}
+
+.font-semi-medium{
+    font-size: var(--fs--18);
+}
+
+.font-xxl{
+    font-size: var(--fs--25);
+}
