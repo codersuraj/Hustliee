@@ -6,47 +6,25 @@
       <q-card-section class=" q-pa-none">
         <p class="font-regular text-white text-center">Department</p>
           <div class="q-mt-md">
-            <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6 " no-caps  align="center" label="Choose" icon="" dropdown-icon='none'>
+            <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6 " no-caps  align="center" :label="this.dept" icon="" dropdown-icon='none'>
               <q-list separator bordered class="br-primary">
-                <q-item clickable v-close-popup @click="onItemClick" class="button">
-                  <q-item-section>
-                    <q-item-label>Photos</q-item-label>
+              <q-list separator bordered class="br-primary">
+                <q-item clickable v-close-popup @click="onItemClick" class="button" v-for="item in dept_list" :key="item">
+                  <q-item-section >
+                    <q-item-label>{{item}}</q-item-label>
                   </q-item-section>
                 </q-item>
-
-                <q-item clickable v-close-popup @click="onItemClick">
-                  <q-item-section>
-                    <q-item-label>Videos</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-close-popup @click="onItemClick">
-                  <q-item-section>
-                    <q-item-label>Articles</q-item-label>
-                  </q-item-section>
-                </q-item>
+              </q-list>
               </q-list>
             </q-btn-dropdown>
           </div>
         <p class="font-regular text-white text-center" style="margin-top:18px;" >Name</p>
           <div class="q-mt-md ">
-            <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6" no-caps  align="center" label="Choose" icon="" dropdown-icon='none' >
+            <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6" no-caps  align="center" :label=this.name icon="" dropdown-icon='none' >
               <q-list separator bordered class="br-primary">
-                <q-item clickable v-close-popup @click="onItemClick" class="button">
-                  <q-item-section>
-                    <q-item-label>Photos</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-close-popup @click="onItemClick">
-                  <q-item-section>
-                    <q-item-label>Videos</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable v-close-popup @click="onItemClick">
-                  <q-item-section>
-                    <q-item-label>Articles</q-item-label>
+                <q-item clickable v-close-popup @click="onItemClick" class="button" v-for="item in dept" :key="item">
+                  <q-item-section >
+                    <q-item-label>{{item}}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -68,15 +46,26 @@
 
 import { defineComponent } from 'vue'
 
+
+
 export default defineComponent({
   name: 'LoginPage',
-  setup () {
+  data() {
     return {
-      onItemClick () {
-        // console.log('Clicked on an Item')
-      }
+      name:'Choose',
+      dept : 'Choose',
+      dept_list: ['EEE', 'ECE', 'CSE', 'CE', 'CH', 'AD', 'BME', 'MECH'],
+
     }
+  },
+
+  methods :{
+    onItemClick(e) {
+          this.dept = e.target.innerHTML
+      }
   }
+
+
 })
 </script>
 
