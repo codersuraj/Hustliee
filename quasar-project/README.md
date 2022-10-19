@@ -1,4 +1,4 @@
-# Quasar App (quasar-project)
+# Hustlie
 
 A Quasar Project
 
