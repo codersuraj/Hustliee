@@ -7,18 +7,26 @@
         <p class="font-regular text-white text-center ">Set Password</p>
         <div class="q-mt-md q-px-md ">
           <div class="q-px-md grey-bg input br-secondary q-pb-xl" >
-                <q-input  borderless v-model="text" :dense="dense" autofocus  type="password" fill-mask="*" unmasked-value="true"/>
+            <q-input :dense="dense" borderless v-model="password" :type="isPwd ? 'password' : 'text'" >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+      </q-input>
           </div>
           </div>
         <p class="font-regular text-white text-center"  style="margin-top:18px;" >Enter OTP</p>
          <div class="q-mt-md q-px-md ">
-          <div class="q-px-md grey-bg input br-secondary q-pb-xl" >
-                <q-input borderless v-model="text" :dense="dense" autofocus  type="password" fill-mask="*" unmasked-value="true"/>
+          <div class="q-px-md grey-bg input br-secondary q-pb-xl center" >
+                <q-input  borderless v-model="text" :dense="dense" autofocus  mask="#-#-#-#-#-#"/>
           </div>
           </div>
           <div style="margin-top:46px;">
-            <q-btn padding="8px 0px" size="25px" class="bg-prime fw-bold button"  text-color="black" label="SIGN IN" />
-          </div>
+            <q-btn padding="8px 0px" size="25px" v-model="otp" class="bg-prime fw-bold button" text-color="black" label="SIGN IN" />
+          </div>                     
 
       </q-card-section>
     </q-card>
@@ -30,12 +38,16 @@
 <script>
 
 
-import { defineComponent } from 'vue'
-
-
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'LoginPage',
+  setup() {
+    return {
+      isPwd: ref(true),
+      otp: ref(null),
+    }
+  },
   data() {
     return {
 
@@ -83,5 +95,15 @@ export default defineComponent({
   width: 100%;
   height: 42px;
 }
+
+
+.q-field {
+    position: relative;
+    font-size: 18px;
+    top: -4px;
+
+}
+
+
 
 </style>
