@@ -158,6 +158,10 @@ select {
     border-radius: var(--br-10);
 }
 
+.font-small{
+  font-size: var(--fs--12);
+}
+
 .br-secondary{
     border-radius: var(--br--5);
 }
