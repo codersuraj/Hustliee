@@ -59,7 +59,7 @@ export default defineComponent({
 
   methods :{
     onItemClick(e) {
-          this.dept = e.target.innerHTML
+          this.dept = e.target.innerHTML;
       }
   }
 
@@ -94,6 +94,15 @@ export default defineComponent({
 
 }
 
+
+.q-item{
+  padding: 0px;
+min-height: 0px;
+}
+.q-item__label{
+  height: 30px;
+  padding: 6px;
+}
 
 
 </style>
