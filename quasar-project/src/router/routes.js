@@ -7,7 +7,8 @@ const routes = [
     children: [
       { path: '/', component: () => import('src/pages/HomePage.vue') },
       { path: '/login', component: () => import('src/pages/admin/LoginPage.vue') },
-      { path: '/signin', component: () => import('src/pages/admin/SignIn.vue') }
+      { path: '/signin', component: () => import('src/pages/admin/SignIn.vue') },
+      { path: '/stsignin', component: () => import('src/pages/user/SignIn.vue') }
     ]
   },
 
