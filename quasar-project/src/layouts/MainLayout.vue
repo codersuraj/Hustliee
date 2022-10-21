@@ -1,31 +1,119 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <div class="q-pa-md page">
+    <div style="max-width: 600px">
 
-    <q-header class="bg-primary text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          Title
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
+      <div class="q-gutter-y-sm">
+        <q-tab-panels
+          v-model="tab"
+          animated
+          transition-prev="scale"
+          transition-next="scale"
+          class="bg-purple text-white text-center"
+        >
+          <q-tab-panel name="mails">
+            <div class="text-h6">Mails</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+          <q-tab-panel name="alarms">
+            <div class="text-h6">Alarms</div>
+            Ad molestiae non facere animi nobis, similique nemo velit reiciendis corporis impedit nam in.
+          </q-tab-panel>
 
-    <q-footer class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          <div>Title</div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
+          <q-tab-panel name="movies">
+            <div class="text-h6">Movies</div>
+            Nostrum necessitatibus expedita dolores? Voluptatem repudiandae magni ea.
+          </q-tab-panel>
+        </q-tab-panels>
 
-  </q-layout>
+        <q-tab-panels
+          v-model="tab"
+          animated
+          transition-prev="fade"
+          transition-next="fade"
+          class="bg-orange text-white text-center"
+        >
+          <q-tab-panel name="mails">
+            <div class="text-h6">Mails</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+
+          <q-tab-panel name="alarms">
+            <div class="text-h6">Alarms</div>
+            Ad molestiae non facere animi nobis, similique nemo velit reiciendis corporis impedit nam in.
+          </q-tab-panel>
+
+          <q-tab-panel name="movies">
+            <div class="text-h6">Movies</div>
+            Nostrum necessitatibus expedita dolores? Voluptatem repudiandae magni ea.
+          </q-tab-panel>
+        </q-tab-panels>
+
+        <q-tab-panels
+          v-model="tab"
+          animated
+          transition-prev="jump-up"
+          transition-next="jump-down"
+          class="bg-teal text-white text-center"
+        >
+          <q-tab-panel name="mails">
+            <div class="text-h6">Mails</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+
+          <q-tab-panel name="alarms">
+            <div class="text-h6">Alarms</div>
+            Ad molestiae non facere animi nobis, similique nemo velit reiciendis corporis impedit nam in.
+          </q-tab-panel>
+
+          <q-tab-panel name="movies">
+            <div class="text-h6">Movies</div>
+            Nostrum necessitatibus expedita dolores? Voluptatem repudiandae magni ea.
+          </q-tab-panel>
+        </q-tab-panels>
+      </div>
+    </div>
+    <q-tabs
+        v-model="tab"
+        align="justify"
+        narrow-indicator
+        class="q-mb-lg vertical-bottom"
+        vertical-bottom
+      >
+        <q-tab  icon="home" />
+        <q-tab class="text-orange" name="alarms" label="Alarms" icon="home" />
+        <q-tab class="text-teal" name="movies" label="Movies" />
+      </q-tabs>
+  </div>
+
 </template>
+
+<script>
+import { ref } from 'vue'
+import home from "../assets/home2.png"
+
+export default {
+  setup () {
+    return {
+      home,
+      tab: ref('mails')
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+.footer-tab{
+  position: relative;
+  bottom: 0px;
+}
+
+
+.page{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+</style>
