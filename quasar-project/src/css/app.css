@@ -182,3 +182,7 @@ select {
 .font-xxl{
     font-size: var(--fs--25);
 }
+
+.fg-secon{
+  color: var(--secondary);
+}
