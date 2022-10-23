@@ -135,8 +135,17 @@ select {
 .fw-bold{
     font-weight: var(--fw--bold);
 }
+
+.fw-semibold{
+    font-weight: var(--fw--semibold);
+}
+
 .bg-prime{
     background-color: var(--primary);
+}
+
+.fg-prime{
+    color: var(--primary);
 }
 .dark-bg{
     background-color: var(--black--dark);
@@ -183,6 +192,7 @@ select {
     font-size: var(--fs--25);
 }
 
-.fg-secon{
-  color: var(--secondary);
+.font-xsm{
+    font-size: var(--fs--10);
 }
+

@@ -1,7 +1,27 @@
 <template>
-  <div class="q-pa-md page">
+  <div class="page" style="padding:25px">
+    <div class="navbar">
+      <div class="logout-bar flex">
+        <q-btn round>
+          <q-avatar size="38px">
+            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+          </q-avatar>
+          </q-btn>
+          <q-space/>
+          <q-btn>
+          <div class="flex column">
+              <span class="ham"></span>
+              <span class="ham1"></span>
+            </div>
+              <q-badge rounded color="orange-5" />
+              </q-btn>
+      </div>
+      <div class="namebar" >
+        <h1 class="text-white font-xxl title-text q-mt-lg">Hello,<span class="fg-prime fw-semibold"> Hari!</span></h1>
+        <p class="text-white font-xsm">Have a wonderful day!</p>
+      </div>
+    </div>
     <div >
-
       <div class="q-gutter-y-sm">
         <router-view/>
       </div>
@@ -10,7 +30,7 @@
         v-model="tab"
         align="justify"
         narrow-indicator
-        class="q-mb-lg vertical-bottom"
+        class="q-mb-md vertical-bottom"
         vertical-bottom
         
       >
@@ -38,7 +58,27 @@ export default {
 
 <style scoped>
 
-  
+.title-text{
+  line-height: 1.5;
+  letter-spacing: normal;
+
+}
+.navbar{
+  height: 130px;
+}
+
+.logout-bar{
+  height: 45px;
+}
+.namebar{
+  height: 65px;
+}
+
+
+.lines{
+  width: 50px;
+  height: 100%;
+}
 :deep(.q-tab__indicator) {
     height: 4px !important;
     width: 25px;
@@ -52,7 +92,11 @@ export default {
   bottom: 0px;
 }
 
-
+.q-btn{
+  padding: 0px !important;
+  display: block;
+  top: 5px;
+}
 
 .active{
   transition: transform 0.3s all;
@@ -60,6 +104,25 @@ export default {
   position: relative;
   bottom: 5px;
   transition: transform 1s all;
+}
+
+.ham{
+  position: relative;
+  top: 0;
+  right: 0px;
+  height: 4px;
+  width: 30px;
+  background-color: white;
+}
+
+.ham1{
+  position: relative;
+  top: 6px;
+  left: 10px;
+  right: 0px;
+  height: 4px;
+  width: 20px;
+  background-color: white;
 }
 
 
