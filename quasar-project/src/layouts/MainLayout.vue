@@ -1,92 +1,92 @@
 <template>
-  <div class="page dark-bg" style="padding:25px">
+  <div class="page dark-bg" style="padding: 25px">
     <div class="navbar">
       <div class="logout-bar flex">
         <q-btn round>
           <q-avatar size="38px">
-            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+            <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
           </q-avatar>
-          </q-btn>
-          <q-space/>
-          <q-btn>
+        </q-btn>
+        <q-space />
+        <q-btn>
           <div class="flex column">
-              <span class="ham"></span>
-              <span class="ham1"></span>
-            </div>
-              <q-badge rounded class="bg-prime" />
-              </q-btn>
+            <span class="ham"></span>
+            <span class="ham1"></span>
+          </div>
+          <q-badge rounded class="bg-prime" />
+        </q-btn>
       </div>
-      <div class="namebar" >
-        <h1 class="text-white font-xxl title-text q-mt-sm">Hello,<span class="fg-prime fw-semibold"> Hari!</span></h1>
+      <div class="namebar">
+        <h1 class="text-white font-xxl title-text q-mt-sm">
+          Hello,<span class="fg-prime fw-semibold"> Hari!</span>
+        </h1>
         <p class="text-white font-xsm">Have a wonderful day!</p>
       </div>
     </div>
 
-      <div class="space">
-        <router-view/>
-      </div>
-    <q-tabs
-        v-model="tab"
-        align="justify"
-
-        class="q-my-md"
-
-        
-      >
-        <q-tab name="alarms"  ><img src="../assets/diagram.svg" :class="{active : this.tab == 'alarms'}"></q-tab>
-        <q-tab name="movies"  ><img src="../assets/home.svg" :class="{svg ,active : this.tab == 'movies'}" ></q-tab>
-        <q-tab name="mails" ><img src="../assets/setting.svg" :class="{svg ,active : this.tab == 'mails'}" ></q-tab>
-      </q-tabs>
+    <div class="space">
+      <router-view />
+    </div>
+    <q-tabs v-model="tab" align="justify" class="q-my-md">
+      <q-tab name="alarms"
+        ><img
+          src="../assets/diagram.svg"
+          :class="{ active: this.tab == 'alarms' }"
+      /></q-tab>
+      <q-tab name="movies"
+        ><img
+          src="../assets/home.svg"
+          :class="{ svg, active: this.tab == 'movies' }"
+      /></q-tab>
+      <q-tab name="mails"
+        ><img
+          src="../assets/setting.svg"
+          :class="{ svg, active: this.tab == 'mails' }"
+      /></q-tab>
+    </q-tabs>
   </div>
-
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export default {
-  setup () {
+  setup() {
     return {
-      tab: ref('mails'),
-
-    }
+      tab: ref("mails"),
+    };
   },
-
-}
+};
 </script>
 
 <style scoped>
-
-.title-text{
+.title-text {
   line-height: 1.5;
   letter-spacing: normal;
-
 }
-.navbar{
+.navbar {
   height: 130px;
 }
 
-.logout-bar{
+.logout-bar {
   height: 45px;
 }
-.namebar{
+.namebar {
   height: 65px;
 }
 
-.space{
+.space {
   height: 100%;
   width: 100%;
-  overflow-y:scroll ;
-  -ms-overflow-style: none;  /* IE and Edge */
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;
 }
 .space::-webkit-scrollbar {
   display: none;
 }
 
-
-
-.lines{
+.lines {
   width: 50px;
   height: 100%;
 }
@@ -98,18 +98,18 @@ export default {
     border-radius: 10px 10px 0 0;
 } */
 
-.footer-tab{
+.footer-tab {
   position: relative;
   bottom: 0px;
 }
 
-.q-btn{
+.q-btn {
   padding: 0px !important;
   display: block;
   top: 5px;
 }
 
-.active{
+.active {
   transition: transform 0.3s all;
   width: 40px;
   position: relative;
@@ -117,7 +117,7 @@ export default {
   transition: transform 1s all;
 }
 
-.ham{
+.ham {
   position: relative;
   top: 0;
   right: 0px;
@@ -126,7 +126,7 @@ export default {
   background-color: white;
 }
 
-.ham1{
+.ham1 {
   position: relative;
   top: 6px;
   left: 10px;
@@ -136,15 +136,10 @@ export default {
   background-color: white;
 }
 
-
-
-.page{
+.page {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 }
-
-
 </style>
