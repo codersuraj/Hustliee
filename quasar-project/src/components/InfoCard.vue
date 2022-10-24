@@ -49,7 +49,7 @@
       </div>
       <div class="flex justify-between q-mt-lg" v-if="item.status == 0">
         <q-btn
-          padding="5px 32px"
+          padding="5px 29px"
           size="12px"
           v-model="otp"
           class="box-shadow semidark-bg fw-medium br-primary"
@@ -58,7 +58,7 @@
           no-caps
         />
         <q-btn
-          padding="5px 32px"
+          padding="5px 31.5px"
           size="12px"
           v-model="otp"
           class="box-shadow semidark-bg fw-medium br-primary"
@@ -150,5 +150,9 @@ export default {
 
 .accepted_card p:nth-child(even) {
   color: #1f2123;
+}
+
+.t-shadow {
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>

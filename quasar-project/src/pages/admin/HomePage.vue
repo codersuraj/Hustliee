@@ -45,7 +45,7 @@
               class="text-white semidark-bg"
               style="padding: 20px 20px 0 20px"
             >
-              <div v-for="item in all" :key="item">
+              <div v-for="item in all" :key="item" class="box-shadow">
                 <InfoCard :item="item" />
               </div>
             </q-tab-panel>
@@ -82,7 +82,7 @@
               style="padding: 20px 20px 0 20px"
             >
               <div v-if="OverallStatus.pending != 0">
-                <div v-for="item in all" :key="item">
+                <div v-for="item in all" :key="item" class="box-shadow">
                   <div v-if="item.status == 0">
                     <InfoCard :item="item" />
                   </div>
@@ -187,7 +187,7 @@ export default {
   },
   setup() {
     return {
-      option: ref("all"),
+      option: ref("pending"),
     };
   },
 };
@@ -235,6 +235,9 @@ export default {
   padding: 0 3px;
 }
 
+:deep(.q-tab__indicator) {
+  background-color: transparent;
+}
 .q-card {
   background: transparent;
 }
@@ -248,10 +251,6 @@ export default {
 
 .panel-color {
   background-color: #2a2e31;
-}
-
-.t-shadow {
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .scroll {

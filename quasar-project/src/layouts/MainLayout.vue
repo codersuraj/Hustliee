@@ -28,20 +28,23 @@
       <router-view />
     </div>
     <q-tabs v-model="tab" align="justify" class="q-my-md">
-      <q-tab name="alarms"
+      <q-tab name="history"
         ><img
           src="../assets/diagram.svg"
-          :class="{ active: this.tab == 'alarms' }"
+          :class="{ active: this.tab == 'history' }"
+          alt="History"
       /></q-tab>
-      <q-tab name="movies"
+      <q-tab name="home"
         ><img
           src="../assets/home.svg"
-          :class="{ svg, active: this.tab == 'movies' }"
+          :class="{ svg, active: this.tab == 'home' }"
+          alt="Home"
       /></q-tab>
-      <q-tab name="mails"
+      <q-tab name="settings"
         ><img
           src="../assets/setting.svg"
-          :class="{ svg, active: this.tab == 'mails' }"
+          :class="{ svg, active: this.tab == 'settings' }"
+          alt="Settings"
       /></q-tab>
     </q-tabs>
   </div>
@@ -53,7 +56,7 @@ import { ref } from "vue";
 export default {
   setup() {
     return {
-      tab: ref("mails"),
+      tab: ref("home"),
     };
   },
 };
@@ -90,13 +93,13 @@ export default {
   width: 50px;
   height: 100%;
 }
-/* :deep(.q-tab__indicator) {
+:deep(.q-tab__indicator) {
     height: 4px !important;
     width: 25px;
     margin-inline: auto;
     background-color: #52D371;
     border-radius: 10px 10px 0 0;
-} */
+}
 
 .footer-tab {
   position: relative;
