@@ -13,7 +13,7 @@
               <span class="ham"></span>
               <span class="ham1"></span>
             </div>
-              <q-badge rounded color="orange-5" />
+              <q-badge rounded class="bg-prime" />
               </q-btn>
       </div>
       <div class="namebar" >
@@ -21,11 +21,10 @@
         <p class="text-white font-xsm">Have a wonderful day!</p>
       </div>
     </div>
-    <div >
-      <div class="q-gutter-y-sm">
+
+      <div class="space">
         <router-view/>
       </div>
-    </div>
     <q-tabs
         v-model="tab"
         align="justify"
@@ -74,6 +73,10 @@ export default {
   height: 65px;
 }
 
+.space{
+  height: 100%;
+  width: 100%;
+}
 
 .lines{
   width: 50px;

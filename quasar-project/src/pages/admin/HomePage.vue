@@ -1,13 +1,23 @@
 <template>
-  <div><h1 style="color:green;">hari</h1></div>
+  <div class="home">
+      <OverallStatus/>
+  </div>
 </template>
 
 <script>
-export default {
 
+import OverallStatus from "../../components/OverallStatus.vue"
+
+export default {
+  components: { OverallStatus },
 }
 </script>
 
-<style>
+<style scoped>
+
+.home{
+  height: inherit;
+  width: 100%;
+}
 
 </style>
