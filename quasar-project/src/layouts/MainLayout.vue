@@ -1,5 +1,5 @@
 <template>
-  <div class="page" style="padding:25px">
+  <div class="page dark-bg" style="padding:25px">
     <div class="navbar">
       <div class="logout-bar flex">
         <q-btn round>
@@ -17,7 +17,7 @@
               </q-btn>
       </div>
       <div class="namebar" >
-        <h1 class="text-white font-xxl title-text q-mt-lg">Hello,<span class="fg-prime fw-semibold"> Hari!</span></h1>
+        <h1 class="text-white font-xxl title-text q-mt-sm">Hello,<span class="fg-prime fw-semibold"> Hari!</span></h1>
         <p class="text-white font-xsm">Have a wonderful day!</p>
       </div>
     </div>
@@ -28,14 +28,14 @@
     <q-tabs
         v-model="tab"
         align="justify"
-        narrow-indicator
-        class="q-mb-md vertical-bottom"
-        vertical-bottom
+
+        class="q-my-md"
+
         
       >
-        <q-tab name="alarms" tabindex="0"  ><img src="../assets/diagram.svg" :class="{active : this.tab == 'alarms'}"></q-tab>
-        <q-tab name="movies" tabindex="1" ><img src="../assets/home.svg" :class="{svg ,active : this.tab == 'movies'}" ></q-tab>
-        <q-tab name="mails" tabindex="2"><img src="../assets/setting.svg" :class="{svg ,active : this.tab == 'mails'}" ></q-tab>
+        <q-tab name="alarms"  ><img src="../assets/diagram.svg" :class="{active : this.tab == 'alarms'}"></q-tab>
+        <q-tab name="movies"  ><img src="../assets/home.svg" :class="{svg ,active : this.tab == 'movies'}" ></q-tab>
+        <q-tab name="mails" ><img src="../assets/setting.svg" :class="{svg ,active : this.tab == 'mails'}" ></q-tab>
       </q-tabs>
   </div>
 
@@ -76,19 +76,27 @@ export default {
 .space{
   height: 100%;
   width: 100%;
+  overflow-y:scroll ;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
 }
+.space::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 .lines{
   width: 50px;
   height: 100%;
 }
-:deep(.q-tab__indicator) {
+/* :deep(.q-tab__indicator) {
     height: 4px !important;
     width: 25px;
     margin-inline: auto;
     background-color: #52D371;
     border-radius: 10px 10px 0 0;
-}
+} */
 
 .footer-tab{
   position: relative;
@@ -135,7 +143,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color:  black;
+
 }
 
 

@@ -136,6 +136,10 @@ select {
     font-weight: var(--fw--bold);
 }
 
+.fw-medium{
+    font-weight: var(--fw--medium);
+}
+
 .fw-semibold{
     font-weight: var(--fw--semibold);
 }
@@ -159,8 +163,20 @@ select {
     background-color: var(--black--dark);
 }
 
+.dark-fg{
+  color: var(--black--dark);
+}
+
 .grey-bg{
     background-color: var(--grey--regular);
+}
+
+.black-r-bg{
+    background-color: var(--black--regular);
+}
+
+.black-r-fg{
+  color: var(--black--regular);
 }
 
 .semidark-bg{
@@ -206,5 +222,9 @@ select {
 
 .font-xsm{
     font-size: var(--fs--10);
+}
+
+.box-shadow{
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
