@@ -11,6 +11,14 @@ const routes = [
       { path: '/stsignin', component: () => import('src/pages/user/SignIn.vue') }
     ]
   },
+  {
+    path: '/home',
+
+    component: () => import('src/layouts/MainLayout.vue'),
+    children: [
+       { path: '/home/home', component: () => import('src/pages/admin/HomePage.vue') }                         
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it
