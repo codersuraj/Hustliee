@@ -14,11 +14,22 @@
             <span class="ham1"></span>
           </div>
           <q-badge rounded class="bg-prime" />
+          <q-popup-proxy>
+            <q-banner style="height: 80vh; width: 100%" class="black-r-bg">
+              <template v-slot:avatar> </template>
+            </q-banner>
+          </q-popup-proxy>
         </q-btn>
       </div>
-      <div class="namebar">
+      <div class="namebar" v-if="this.tab == 'home'">
         <h1 class="text-white font-xxl title-text q-mt-sm">
           Hello,<span class="fg-prime fw-semibold"> Hari!</span>
+        </h1>
+        <p class="text-white font-xsm">Have a wonderful day!</p>
+      </div>
+      <div class="namebar" v-else-if="this.tab == 'history'">
+        <h1 class="text-white font-xxl title-text q-mt-sm">
+          Your <span class="fg-prime fw-semibold">OD</span> history
         </h1>
         <p class="text-white font-xsm">Have a wonderful day!</p>
       </div>
@@ -54,10 +65,18 @@
 import { ref } from "vue";
 
 export default {
+  data() {
+    let isActive = false;
+  },
   setup() {
     return {
       tab: ref("home"),
     };
+  },
+  methods: {
+    toggle() {
+      this.isActive = !this.isActive;
+    },
   },
 };
 </script>
@@ -94,11 +113,11 @@ export default {
   height: 100%;
 }
 :deep(.q-tab__indicator) {
-    height: 4px !important;
-    width: 25px;
-    margin-inline: auto;
-    background-color: #52D371;
-    border-radius: 10px 10px 0 0;
+  height: 4px !important;
+  width: 25px;
+  margin-inline: auto;
+  background-color: #52d371;
+  border-radius: 10px 10px 0 0;
 }
 
 .footer-tab {
@@ -110,6 +129,7 @@ export default {
   padding: 0px !important;
   display: block;
   top: 5px;
+  box-shadow: none;
 }
 
 .active {
