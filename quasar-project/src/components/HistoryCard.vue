@@ -4,9 +4,9 @@
     class=" black-r-bg color_card text-white"
     style="padding-block: 20px; padding-inline: 25px"
   >
-    <!-- <p style="text-align: end" class="font-xsm q-mb-sm">
-      {{ relaticeDate(item.date) }}
-    </p> -->
+    <p style="text-align: end" class="font-xsm q-mb-sm">
+      {{ formatDate(item.date) }}
+    </p>
     <div class="flex">
       <div class="left">
         <div class="flex q-mb-sm">
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { formatDistance } from "date-fns";
+import { formatDistance, formatRelative} from "date-fns";
 export default {
   name: "HistoryCard",
   props: {
@@ -127,6 +127,11 @@ export default {
         return formatDistance(v, new Date(), { addSuffix: true });
       };
     },
+    formatDate(v) {
+      return (v) => {
+        return formatRelative(v, new Date())
+      }
+    }
   },
 };
 </script>
