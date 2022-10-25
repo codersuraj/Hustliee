@@ -14,6 +14,11 @@
             <span class="ham1"></span>
           </div>
           <q-badge rounded class="bg-prime" />
+          <q-popup-proxy>
+            <q-banner style="height: 80vh; width: 100%" class="black-r-bg">
+              <template v-slot:avatar> </template>
+            </q-banner>
+          </q-popup-proxy>
         </q-btn>
       </div>
       <div class="namebar" v-if="this.tab == 'home'">
@@ -60,10 +65,18 @@
 import { ref } from "vue";
 
 export default {
+  data() {
+    let isActive = false;
+  },
   setup() {
     return {
       tab: ref("home"),
     };
+  },
+  methods: {
+    toggle() {
+      this.isActive = !this.isActive;
+    },
   },
 };
 </script>
@@ -116,6 +129,7 @@ export default {
   padding: 0px !important;
   display: block;
   top: 5px;
+  box-shadow: none;
 }
 
 .active {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-white q-mt-lg">Apply for an OD</p>
-    <q-card class="my-card semidark-bg q-mt-md">
+    <q-card class="my-card semidark-bg q-mt-md br-primary">
       <q-card-section style="padding: 20px 25px">
         <p class="font-xsm fw-medium text-white text-start">Name</p>
         <div class="q-mt-sm">
@@ -104,7 +104,12 @@
                           <div class="q-pa-md" style="text-align: center">
                             <div class="q-pb-sm">Model: {{ qdate }}</div>
 
-                            <q-date v-model="qdate" range />
+                            <q-date
+                              v-model="qdate"
+                              range
+                              dark
+                              color="orange-5"
+                            />
                           </div>
                         </q-popup-proxy>
                       </q-icon>
@@ -201,7 +206,7 @@
           size="12px"
           v-model="otp"
           class="box-shadow bg-prime fw-medium br-primary"
-          style="margin-top:35px;"
+          style="margin-top: 35px"
           text-color="black"
           label="Accept"
           no-caps
