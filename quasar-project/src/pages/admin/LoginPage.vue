@@ -66,13 +66,15 @@
               </q-btn-dropdown>
             </div>
             <div style="margin-top: 46px">
-              <q-btn
-                padding="8px 0px"
-                size="25px"
-                class="bg-prime fw-bold button"
-                text-color="black"
-                label="NEXT"
-              />
+              <router-link to="/staff/signin" style="text-decoration:none;">
+                <q-btn
+                  padding="8px 0px"
+                  size="25px"
+                  class="bg-prime fw-bold button"
+                  text-color="black"
+                  label="NEXT"
+                />
+              </router-link>
             </div>
           </q-card-section>
         </q-card>

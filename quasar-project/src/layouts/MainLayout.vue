@@ -36,33 +36,51 @@
     </div>
 
     <div class="space">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="route" mode="out-in">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
     </div>
-    <q-tabs v-model="tab" align="justify" class="q-my-md">
-      <q-tab name="history"
-        ><img
-          src="../assets/diagram.svg"
-          :class="{ active: this.tab == 'history' }"
-          alt="History"
-      /></q-tab>
-      <q-tab name="home"
-        ><img
-          src="../assets/home.svg"
-          :class="{ svg, active: this.tab == 'home' }"
-          alt="Home"
-      /></q-tab>
-      <q-tab name="settings"
-        ><img
-          src="../assets/setting.svg"
-          :class="{ svg, active: this.tab == 'settings' }"
-          alt="Settings"
-      /></q-tab>
+    <q-tabs v-model="tab" align="justify" class="q-my-md " ripple="false">
+      <div>
+      <router-link to="/history" style="text-decoration: none">
+        <q-tab name="history" ripple="false">
+          <img
+            src="../assets/diagram.svg"
+            :class="{ active: this.tab == 'history' }"
+            alt="History"
+          />
+        </q-tab>
+      </router-link>
+      </div>
+      <div>
+      <router-link to="/staff/home" style="text-decoration: none">
+        <q-tab name="home">
+          <img
+            src="../assets/home.svg"
+            :class="{ svg, active: this.tab == 'home' }"
+            alt="Home"
+          />
+        </q-tab>
+      </router-link>
+      </div>
+      <router-link to="/staff/home" style="text-decoration: none">
+        <q-tab name="settings"
+          ><img
+            src="../assets/setting.svg"
+            :class="{ svg, active: this.tab == 'settings' }"
+            alt="Settings"
+        /></q-tab>
+      </router-link>
     </q-tabs>
   </div>
 </template>
 
 <script>
+import { route } from "quasar/wrappers";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -78,10 +96,35 @@ export default {
       this.isActive = !this.isActive;
     },
   },
+  beforeRouteLeave(to, from, next) {
+    console.log("hi");
+    if (to === "/history") {
+      this.tab = "history";
+    } else if (to === "/staff/home") {
+      this.tab = "home";
+    }
+    next();
+  },
 };
 </script>
 
 <style scoped>
+/* route transition */
+
+.route-enter-from {
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.route-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.route-leave-to {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
 .title-text {
   line-height: 1.5;
   letter-spacing: normal;
@@ -97,6 +140,13 @@ export default {
   height: 65px;
 }
 
+:deep(.q-tabs__content) {
+  display: flex;
+  margin-inline: 25px;
+  justify-content: space-between;
+
+}
+
 .space {
   height: 100%;
   width: 100%;
@@ -108,10 +158,6 @@ export default {
   display: none;
 }
 
-.lines {
-  width: 50px;
-  height: 100%;
-}
 :deep(.q-tab__indicator) {
   height: 4px !important;
   width: 25px;
@@ -120,9 +166,8 @@ export default {
   border-radius: 10px 10px 0 0;
 }
 
-.footer-tab {
-  position: relative;
-  bottom: 0px;
+:deep(.q-tab .q-ripple){
+  display: none;
 }
 
 .q-btn {

@@ -6,19 +6,20 @@ const routes = [
     component: () => import('src/layouts/AuthLayout.vue'),
     children: [
       { path: '/', component: () => import('src/pages/HomePage.vue') },
-      { path: '/login', component: () => import('src/pages/admin/LoginPage.vue') },
-      { path: '/signin', component: () => import('src/pages/admin/SignIn.vue') },
-      { path: '/stsignin', component: () => import('src/pages/user/SignIn.vue') }
+      { path: '/staff/login', component: () => import('src/pages/admin/LoginPage.vue') },
+      { path: '/staff/signin', component: () => import('src/pages/admin/SignIn.vue') },
+      { path: '/user/login', component: () => import('src/pages/user/SignIn.vue') }
     ]
   },
   {
-    path: '/home',
+    path: '/',
+    redirect: '/home',
 
     component: () => import('src/layouts/MainLayout.vue'),
     children: [
-      { path: '/home/home', component: () => import('src/pages/admin/HomePage.vue') },
-      { path: '/home/history', component: () => import('src/pages/HistoryPage.vue') },
-      { path: '/home/sthome', component: () => import('src/pages/user/HomePageSt.vue') },
+      { path: '/staff/home', component: () => import('src/pages/admin/HomePage.vue') },
+      { path: '/history', component: () => import('src/pages/HistoryPage.vue') },
+      { path: '/user/home', component: () => import('src/pages/user/HomePageSt.vue') },
     ]
   },
 
