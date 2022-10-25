@@ -43,9 +43,11 @@
         <div class="name-holder">
           <p class="font-xsm">Purpose-</p>
         </div>
-        <p class="fw-semibold t-shadow font-small">
-          {{ item.purpose }}
-        </p>
+        <div style="width: 55%">
+          <p class="fw-semibold t-shadow font-small">
+            {{ item.purpose }}
+          </p>
+        </div>
       </div>
       <div class="flex justify-between q-mt-lg" v-if="item.status == 0">
         <q-btn
