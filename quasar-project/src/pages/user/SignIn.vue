@@ -13,7 +13,6 @@
                   :dense="dense"
                   borderless
                   v-model="name"
-                  mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSS"
                 >
                 </q-input>
               </div>
