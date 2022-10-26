@@ -4,7 +4,13 @@
       <q-page class="ma-y-40 vertical-align">
         <q-card class="my-card semidark-bg br-primary pa-interior">
           <q-card-section class="q-pa-none">
-            <p class="font-regular text-white text-center">Department</p>
+            <p
+              class="fw-semibold text-center text-white"
+              style="font-size: 30px; top: -10px; position: relative"
+            >
+              SIGN UP
+            </p>
+            <p class="font-regular grey-fg text-center q-mt-md">Department</p>
             <div class="q-mt-md q-px-md">
               <q-btn-dropdown
                 padding="6px 0px"
@@ -33,7 +39,7 @@
               </q-btn-dropdown>
             </div>
             <p
-              class="font-regular text-white text-center"
+              class="font-regular grey-fg text-center"
               style="margin-top: 18px"
             >
               Name
@@ -65,7 +71,7 @@
                 </q-list>
               </q-btn-dropdown>
             </div>
-            <p class="font-regular text-white text-center q-mt-md">Email</p>
+            <p class="font-regular grey-fg text-center q-mt-md">Email</p>
             <div class="q-mt-md">
               <div
                 class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
@@ -82,9 +88,7 @@
               </div>
             </div>
 
-            <p class="font-regular text-white text-center q-mt-md">
-              Set Password
-            </p>
+            <p class="font-regular grey-fg text-center q-mt-md">Set Password</p>
             <div class="q-mt-md">
               <div class="q-px-md grey-bg input br-secondary q-pb-xl">
                 <q-input
@@ -104,17 +108,25 @@
               </div>
             </div>
 
-            <div style="margin-top: 46px">
-              <router-link to="/staff/signin" style="text-decoration: none">
-                <q-btn
-                  :disabled="isDisable"
-                  padding="8px 0px"
-                  size="25px"
-                  class="bg-prime fw-bold button"
-                  text-color="black"
-                  label="NEXT"
-                />
-              </router-link>
+            <p
+              class="text-red-4 q-mt-sm text-center"
+              style="position: relative; bottom: -10px"
+              v-show="alert"
+            >
+              *All Fields Are Required
+            </p>
+
+            <div style="margin-top: 46px" class="q-px-lg">
+              <!-- <router-link to="/staff/signin" style="text-decoration: none"> -->
+              <q-btn
+                padding="6px 0px"
+                size="20px"
+                class="bg-prime fw-bold button"
+                text-color="black"
+                label="NEXT"
+                @click="submitForm"
+              />
+              <!-- </router-link> -->
             </div>
           </q-card-section>
         </q-card>
@@ -125,6 +137,8 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 export default defineComponent({
   name: "LoginPage",
@@ -145,12 +159,21 @@ export default defineComponent({
 
   data() {
     return {
-      name: "Choose",
-      dept: "Choose",
+      v$: useVuelidate(),
+      name: "a",
+      dept: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
       email: "",
       password: "",
-      isDisable: "false",
+      alert: false,
+    };
+  },
+  validations() {
+    return {
+      name: { required },
+      dept: { required },
+      email: { required },
+      password: { required },
     };
   },
 
@@ -158,18 +181,14 @@ export default defineComponent({
     onItemClick(e) {
       this.dept = e.target.innerHTML;
     },
-    isDisabled() {
-      if (
-        this.name == "Choose" ||
-        this.dept == "Choose" ||
-        this.email == "" ||
-        this.password == ""
-      ) {
-        this.isDisable = "false";
+    submitForm() {
+      this.v$.$validate();
+      if (this.v$.$error) {
+        this.alert = true;
       } else {
-        this.isDisable = "true";
+        this.alert = false;
+        
       }
-      return this.isDisable;
     },
   },
 });
@@ -178,7 +197,7 @@ export default defineComponent({
 <style scoped>
 .my-card {
   width: 100%;
-  height: 550px;
+  height: 100%;
   /* max-width: 250px; */
 }
 

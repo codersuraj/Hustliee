@@ -4,8 +4,14 @@
       <q-page class="ma-y-40 vertical-align">
         <q-card class="my-card semidark-bg br-primary pa-interior">
           <q-card-section class="q-pa-none">
-            <p class="font-regular text-white text-center">Name</p>
-            <div class="q-mt-md q-px-md">
+            <p
+              class="fw-semibold text-center text-white"
+              style="font-size: 30px; top: -10px; position: relative"
+            >
+              LOGIN IN
+            </p>
+            <p class="font-regular grey-fg text-center q-mt-md">Name</p>
+            <div class="q-mt-md">
               <div class="q-px-md grey-bg input br-secondary q-pb-xl">
                 <q-input
                   ref="inputRef"
@@ -18,12 +24,12 @@
               </div>
             </div>
             <p
-              class="font-regular text-white text-center"
+              class="font-regular grey-fg text-center"
               style="margin-top: 18px"
             >
               Roll No
             </p>
-            <div class="q-mt-md q-px-md">
+            <div class="q-mt-md">
               <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
                 <q-input
                   ref="inputRef"
@@ -39,12 +45,12 @@
             <div class="flex">
               <div class="input-2">
                 <p
-                  class="font-regular text-white text-center"
-                  style="margin-top: 18px; margin-left: 10px"
+                  class="font-regular grey-fg text-center"
+                  style="margin-top: 18px; "
                 >
                   Year
                 </p>
-                <div class="q-mt-md q-pl-md q-pr-sm">
+                <div class="q-mt-md q-pr-md">
                   <div
                     class="q-px-md grey-bg input br-secondary q-pb-xl center"
                   >
@@ -63,15 +69,15 @@
 
               <div class="input-2">
                 <p
-                  class="font-regular text-white text-center"
-                  style="margin-top: 18px; margin-right: 15px"
+                  class="font-regular grey-fg text-center"
+                  style="margin-top: 18px;"
                 >
                   Dept
                 </p>
-                <div class="q-mt-md q-px-md">
+                <div class="q-mt-md ">
                   <q-btn-dropdown
                     padding="6px 0px"
-                    size="18px"
+                    size="16px"
                     class="grey-bg button font-semi-medium shadow-6 dept-btn"
                     no-caps
                     :label="this.dept_name_item"
@@ -98,10 +104,10 @@
                 </div>
               </div>
             </div>
-            <div style="margin-top: 90px">
+            <div style="margin-top: 100px" class="q-px-lg">
               <q-btn
                 icon="fa-brands fa-google"
-                padding="15px 0px"
+                padding="12px 0px"
                 size="18px"
                 v-model="otp"
                 class="bg-prime fw-bold button"
@@ -159,7 +165,7 @@ export default defineComponent({
 <style scoped>
 .my-card {
   width: 100%;
-  height: 450px;
+  height: 100%;
   /* max-width: 250px; */
 }
 
@@ -193,6 +199,7 @@ export default defineComponent({
   position: relative;
   font-size: 18px;
   top: -4px;
+  font-size: 14px;
 }
 
 .text-center {
