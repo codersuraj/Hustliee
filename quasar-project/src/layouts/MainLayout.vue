@@ -42,10 +42,10 @@
         </transition>
       </router-view>
     </div>
-    <q-tabs v-model="tab" align="justify" class="q-my-md " ripple="false">
+    <q-tabs v-model="tab" align="justify" class="q-my-md ">
       <div>
       <router-link to="/history" style="text-decoration: none">
-        <q-tab name="history" ripple="false">
+        <q-tab name="history">
           <img
             src="../assets/diagram.svg"
             :class="{ active: this.tab == 'history' }"
@@ -167,7 +167,13 @@ export default {
 }
 
 :deep(.q-tab .q-ripple){
+  appearance: none;
   display: none;
+}
+
+:deep(.q-focus-helper){
+  background: transparent;
+  opacity: 0;
 }
 
 .q-btn {
