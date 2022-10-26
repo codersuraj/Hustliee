@@ -38,7 +38,7 @@
                   v-model="rollno"
                   :dense="dense"
                   autofocus
-                  mask="#-#-A-A-#-#-#"
+                  mask="##AA###"
                 />
               </div>
             </div>
@@ -46,7 +46,7 @@
               <div class="input-2">
                 <p
                   class="font-regular grey-fg text-center"
-                  style="margin-top: 18px; "
+                  style="margin-top: 18px"
                 >
                   Year
                 </p>
@@ -70,11 +70,11 @@
               <div class="input-2">
                 <p
                   class="font-regular grey-fg text-center"
-                  style="margin-top: 18px;"
+                  style="margin-top: 18px"
                 >
                   Dept
                 </p>
-                <div class="q-mt-md ">
+                <div class="q-mt-md">
                   <q-btn-dropdown
                     padding="6px 0px"
                     size="16px"
@@ -113,6 +113,7 @@
                 class="bg-prime fw-bold button"
                 text-color="black"
                 label="Sign in"
+                @click="saveData"
               />
             </div>
           </q-card-section>
@@ -125,16 +126,13 @@
 <script>
 import { defineComponent, ref } from "vue";
 
+import { db } from "../../../firestore/firestore";
+
 export default defineComponent({
   name: "LoginPage",
   setup() {
     const inputRef = ref(null);
     return {
-      name: ref(""),
-      rollno: ref(""),
-      model: ref(""),
-      year: ref(""),
-      dept_name: ref(""),
       inputRef,
 
       myRule(val) {
@@ -152,11 +150,30 @@ export default defineComponent({
     return {
       dept_name_item: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
+      name: "",
+      rollno: "",
+      model: "",
+      year: "",
+      dept_name: "",
     };
   },
   methods: {
     onItemClick(e) {
       this.dept_name_item = e.target.innerHTML;
+    },
+    saveData() {
+      db.collection("students")
+        .add({
+          name: this.name,
+          rollno: this.rollno,
+          year: this.year,
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
     },
   },
 });
