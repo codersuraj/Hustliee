@@ -65,9 +65,49 @@
                 </q-list>
               </q-btn-dropdown>
             </div>
+            <p class="font-regular text-white text-center q-mt-md">Email</p>
+            <div class="q-mt-md">
+              <div
+                class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
+              >
+                <q-input
+                  ref="inputRef"
+                  :rules="[myRule]"
+                  :dense="dense"
+                  borderless
+                  v-model="email"
+                  class="fw-semibold"
+                >
+                </q-input>
+              </div>
+            </div>
+
+            <p class="font-regular text-white text-center q-mt-md">
+              Set Password
+            </p>
+            <div class="q-mt-md">
+              <div class="q-px-md grey-bg input br-secondary q-pb-xl">
+                <q-input
+                  :dense="dense"
+                  borderless
+                  v-model="password"
+                  :type="isPwd ? 'password' : 'text'"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
+              </div>
+            </div>
+
             <div style="margin-top: 46px">
-              <router-link to="/staff/signin" style="text-decoration:none;">
+              <router-link to="/staff/signin" style="text-decoration: none">
                 <q-btn
+                  :disabled="isDisable"
                   padding="8px 0px"
                   size="25px"
                   class="bg-prime fw-bold button"
@@ -84,21 +124,52 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "LoginPage",
+  setup() {
+    return {
+      isPwd: ref(true),
+      myRule(val) {
+        // simulating a delay
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(!!val || "");
+          }, 500);
+        });
+      },
+    };
+  },
+
   data() {
     return {
       name: "Choose",
       dept: "Choose",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
+      email: "",
+      password: "",
+      isDisable: "false",
     };
   },
 
   methods: {
     onItemClick(e) {
       this.dept = e.target.innerHTML;
+    },
+    isDisabled() {
+      if (
+        this.name == "Choose" ||
+        this.dept == "Choose" ||
+        this.email == "" ||
+        this.password == ""
+      ) {
+        this.isDisable = "false";
+      } else {
+        this.isDisable = "true";
+      }
+      return this.isDisable;
     },
   },
 });
@@ -107,7 +178,7 @@ export default defineComponent({
 <style scoped>
 .my-card {
   width: 100%;
-  height: 353px;
+  height: 550px;
   /* max-width: 250px; */
 }
 
@@ -134,5 +205,19 @@ export default defineComponent({
 .q-item__label {
   height: 30px;
   padding: 6px;
+}
+
+.q-field {
+  position: relative;
+  font-size: 14px;
+  top: -4px;
+}
+.input {
+  width: 100%;
+  height: 42px;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>
