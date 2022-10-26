@@ -170,6 +170,9 @@ select {
 .grey-bg{
     background-color: var(--grey--regular);
 }
+.grey-fg{
+    color: var(--grey--regular);
+}
 
 .black-r-bg{
     background-color: var(--black--regular);

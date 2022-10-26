@@ -4,7 +4,13 @@
       <q-page class="ma-y-40 vertical-align">
         <q-card class="my-card semidark-bg br-primary pa-interior">
           <q-card-section class="q-pa-none">
-            <p class="font-regular text-white text-center">Department</p>
+            <p
+              class="fw-semibold text-center text-white"
+              style="font-size: 30px; top: -10px; position: relative"
+            >
+              SIGN UP
+            </p>
+            <p class="font-regular grey-fg text-center q-mt-md">Department</p>
             <div class="q-mt-md q-px-md">
               <q-btn-dropdown
                 padding="6px 0px"
@@ -33,7 +39,7 @@
               </q-btn-dropdown>
             </div>
             <p
-              class="font-regular text-white text-center"
+              class="font-regular grey-fg text-center"
               style="margin-top: 18px"
             >
               Name
@@ -65,16 +71,62 @@
                 </q-list>
               </q-btn-dropdown>
             </div>
-            <div style="margin-top: 46px">
-              <router-link to="/staff/signin" style="text-decoration:none;">
-                <q-btn
-                  padding="8px 0px"
-                  size="25px"
-                  class="bg-prime fw-bold button"
-                  text-color="black"
-                  label="NEXT"
-                />
-              </router-link>
+            <p class="font-regular grey-fg text-center q-mt-md">Email</p>
+            <div class="q-mt-md">
+              <div
+                class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
+              >
+                <q-input
+                  ref="inputRef"
+                  :rules="[myRule]"
+                  :dense="dense"
+                  borderless
+                  v-model="email"
+                  class="fw-semibold"
+                >
+                </q-input>
+              </div>
+            </div>
+
+            <p class="font-regular grey-fg text-center q-mt-md">Set Password</p>
+            <div class="q-mt-md">
+              <div class="q-px-md grey-bg input br-secondary q-pb-xl">
+                <q-input
+                  :dense="dense"
+                  borderless
+                  v-model="password"
+                  :type="isPwd ? 'password' : 'text'"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
+              </div>
+            </div>
+
+            <p
+              class="text-red-4 q-mt-sm text-center"
+              style="position: relative; bottom: -10px"
+              v-show="alert"
+            >
+              *All Fields Are Required
+            </p>
+
+            <div style="margin-top: 46px" class="q-px-lg">
+              <!-- <router-link to="/staff/signin" style="text-decoration: none"> -->
+              <q-btn
+                padding="6px 0px"
+                size="20px"
+                class="bg-prime fw-bold button"
+                text-color="black"
+                label="NEXT"
+                @click="submitForm"
+              />
+              <!-- </router-link> -->
             </div>
           </q-card-section>
         </q-card>
@@ -84,21 +136,59 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 export default defineComponent({
   name: "LoginPage",
+  setup() {
+    return {
+      isPwd: ref(true),
+      myRule(val) {
+        // simulating a delay
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(!!val || "");
+          }, 500);
+        });
+      },
+    };
+  },
+
   data() {
     return {
-      name: "Choose",
-      dept: "Choose",
+      v$: useVuelidate(),
+      name: "a",
+      dept: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
+      email: "",
+      password: "",
+      alert: false,
+    };
+  },
+  validations() {
+    return {
+      name: { required },
+      dept: { required },
+      email: { required },
+      password: { required },
     };
   },
 
   methods: {
     onItemClick(e) {
       this.dept = e.target.innerHTML;
+    },
+    submitForm() {
+      this.v$.$validate();
+      if (this.v$.$error) {
+        this.alert = true;
+      } else {
+        this.alert = false;
+        
+      }
     },
   },
 });
@@ -107,7 +197,7 @@ export default defineComponent({
 <style scoped>
 .my-card {
   width: 100%;
-  height: 353px;
+  height: 100%;
   /* max-width: 250px; */
 }
 
@@ -134,5 +224,19 @@ export default defineComponent({
 .q-item__label {
   height: 30px;
   padding: 6px;
+}
+
+.q-field {
+  position: relative;
+  font-size: 14px;
+  top: -4px;
+}
+.input {
+  width: 100%;
+  height: 42px;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>
