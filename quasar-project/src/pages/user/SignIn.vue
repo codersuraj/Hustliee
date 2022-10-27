@@ -8,7 +8,7 @@
               class="fw-semibold text-center text-white"
               style="font-size: 30px; top: -10px; position: relative"
             >
-              LOGIN IN
+              SIGN UP
             </p>
             <p class="font-regular grey-fg text-center q-mt-md">Name</p>
             <div class="q-mt-md">
@@ -104,7 +104,15 @@
                 </div>
               </div>
             </div>
+
             <div style="margin-top: 100px" class="q-px-lg">
+              <p
+                class="text-red-4 q-mt-lg q-mb-md text-center"
+                style=""
+                v-show="alert"
+              >
+                *All Fields Are Required
+              </p>
               <q-btn
                 icon="fa-brands fa-google"
                 padding="12px 0px"
@@ -113,7 +121,10 @@
                 class="bg-prime fw-bold button"
                 text-color="black"
                 label="Sign in"
-                @click="saveData"
+                @click="
+                  submitForm();
+                  SignIn();
+                "
               />
             </div>
           </q-card-section>
@@ -126,7 +137,13 @@
 <script>
 import { defineComponent, ref } from "vue";
 
-import { db } from "../../../firestore/firestore";
+import { db, auth } from "../../../firestore/firestore";
+import firebase from "firebase";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+
+
+import router from "src/router";
 
 export default defineComponent({
   name: "LoginPage",
@@ -148,6 +165,7 @@ export default defineComponent({
   },
   data() {
     return {
+      v$: useVuelidate(),
       dept_name_item: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
       name: "",
@@ -155,6 +173,15 @@ export default defineComponent({
       model: "",
       year: "",
       dept_name: "",
+      alert: false,
+    };
+  },
+  validations() {
+    return {
+      name: { required },
+      dept_name_item: { required },
+      rollno: { required },
+      year: { required },
     };
   },
   methods: {
@@ -173,6 +200,32 @@ export default defineComponent({
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
+        });
+    },
+    submitForm() {
+      this.v$.$validate();
+      if (this.v$.$error) {
+        this.alert = true;
+      } else {
+        this.alert = false;
+      }
+    },
+    SignIn() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          const email_id = result.user.email;
+          const check = email_id.includes("kpriet.ac.in");
+          if (check) {
+            console.log(result.user);
+            router.push("/user/home");
+          } else {
+            auth.currentUser.delete()
+            alert("Only Institution id accepted");
+            // console.log(result.user);
+          }
+          // console.log(result.user.email);
         });
     },
   },
