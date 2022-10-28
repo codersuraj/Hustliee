@@ -1,9 +1,12 @@
 <template>
   <q-layout class="dark-bg">
     <q-page-container>
-      <q-page class="ma-y-40 vertical-align">
+      <q-page class="ma-y-40 vertical-align" >
         <q-card class="my-card semidark-bg br-primary pa-interior">
-          <q-card-section class="q-pa-none">
+          <q-card-section class="q-pa-none" >
+            <div>
+          <p v-show="this.denied" class="text-center text-red-4 font-regular">Please Use an Institution Mail Id</p>
+        </div>
             <p
               class="fw-semibold text-center text-white"
               style="font-size: 30px; top: -10px; position: relative"
@@ -129,6 +132,7 @@
             </div>
           </q-card-section>
         </q-card>
+
       </q-page>
     </q-page-container>
   </q-layout>
@@ -174,6 +178,7 @@ export default defineComponent({
       year: "",
       dept_name: "",
       alert: false,
+      denied: false,
     };
   },
   validations() {
@@ -210,23 +215,26 @@ export default defineComponent({
         this.alert = false;
       }
     },
-    SignIn() {
+    async SignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
 
-      firebase.auth().signInWithPopup(provider)
+      if(this.alert == false){
+     await firebase.auth().signInWithPopup(provider)
         .then((result) => {
           const email_id = result.user.email;
           const check = email_id.includes("kpriet.ac.in");
           if (check) {
             console.log(result.user);
-            router.push("/user/home");
+            this.$router.push("/user/home");
           } else {
             auth.currentUser.delete()
-            alert("Only Institution id accepted");
+           this.denied = true
+            
             // console.log(result.user);
           }
           // console.log(result.user.email);
         });
+      }
     },
   },
 });
