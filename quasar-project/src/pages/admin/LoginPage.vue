@@ -88,7 +88,7 @@
               </div>
             </div>
 
-            <p class="font-regular grey-fg text-center q-mt-md">Set Password</p>
+            <!-- <p class="font-regular grey-fg text-center q-mt-md">Set Password</p>
             <div class="q-mt-md">
               <div class="q-px-md grey-bg input br-secondary q-pb-xl">
                 <q-input
@@ -106,7 +106,7 @@
                   </template>
                 </q-input>
               </div>
-            </div>
+            </div> -->
 
             <p
               class="text-red-4 q-mt-sm text-center"
@@ -124,7 +124,10 @@
                 class="bg-prime fw-bold button"
                 text-color="black"
                 label="NEXT"
-                @click="submitForm"
+                @click="
+                  submitForm();
+                  status();
+                "
               />
               <!-- </router-link> -->
             </div>
@@ -139,6 +142,12 @@
 import { defineComponent, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import { db, auth } from "../../../firestore/firestore";
+import firebase from "firebase";
+const actionCodeSettings = {
+  url: "https://router.vuejs.org/guide/advanced/navigation-guards.html",
+  handleCodeInApp: true,
+};
 
 export default defineComponent({
   name: "LoginPage",
@@ -173,7 +182,6 @@ export default defineComponent({
       name: { required },
       dept: { required },
       email: { required },
-      password: { required },
     };
   },
 
@@ -187,8 +195,22 @@ export default defineComponent({
         this.alert = true;
       } else {
         this.alert = false;
-        
       }
+    },
+    status() {
+      console.log(this.email);
+      firebase
+        .auth()
+        .sendSignInLinkToEmail(this.email, actionCodeSettings)
+        .then(() => {
+          console.log("The link was successfully sent");
+          window.localStorage.setItem("emailForSignIn", email);
+        })
+        .catch((error) => {
+          // const errorCode = error.code;
+          // const errorMessage = error.message;
+          console.log("Not working");
+        });
     },
   },
 });
