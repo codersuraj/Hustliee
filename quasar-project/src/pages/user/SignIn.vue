@@ -1,12 +1,17 @@
 <template>
   <q-layout class="dark-bg">
     <q-page-container>
-      <q-page class="ma-y-40 vertical-align" >
+      <q-page class="ma-y-40 vertical-align">
         <q-card class="my-card semidark-bg br-primary pa-interior">
-          <q-card-section class="q-pa-none" >
+          <q-card-section class="q-pa-none">
             <div>
-          <p v-show="this.denied" class="text-center text-red-4 font-regular">Please Use an Institution Mail Id</p>
-        </div>
+              <p
+                v-show="this.denied"
+                class="text-center text-red-4 font-regular q-mb-md"
+              >
+                {{ issue }}
+              </p>
+            </div>
             <p
               class="fw-semibold text-center text-white"
               style="font-size: 30px; top: -10px; position: relative"
@@ -62,7 +67,7 @@
                       :rules="[myRule]"
                       borderless
                       v-model="year"
-                      :dense="dense"
+                      :dense="this.dense"
                       autofocus
                       mask="#"
                     />
@@ -120,19 +125,29 @@
                 icon="fa-brands fa-google"
                 padding="12px 0px"
                 size="18px"
-                v-model="otp"
-                class="bg-prime fw-bold button"
+                class="bg-prime fw-bold button shadow-6"
                 text-color="black"
-                label="Sign in"
+                label="Sign up"
                 @click="
                   submitForm();
-                  SignIn();
+                  SignUp();
                 "
+              />
+              <p class="grey-fg text-center font-small q-mt-lg">
+                Already have an account?
+              </p>
+              <q-btn
+                icon="fa-brands fa-google"
+                padding="12px 0px"
+                size="18px"
+                class="grey-bg fw-bold button shadow-6 q-mt-md"
+                text-color="black"
+                label="Sign in"
+                @click="SignIn()"
               />
             </div>
           </q-card-section>
         </q-card>
-
       </q-page>
     </q-page-container>
   </q-layout>
@@ -145,7 +160,6 @@ import { db, auth } from "../../../firestore/firestore";
 import firebase from "firebase";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-
 
 import router from "src/router";
 
@@ -179,6 +193,8 @@ export default defineComponent({
       dept_name: "",
       alert: false,
       denied: false,
+      dense: true,
+      issue: "",
     };
   },
   validations() {
@@ -215,25 +231,55 @@ export default defineComponent({
         this.alert = false;
       }
     },
+    async SignUp() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      if (this.alert == false) {
+        await firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            const email_id = result.user.email;
+            const check = email_id.includes("kpriet.ac.in");
+            if (result.additionalUserInfo.isNewUser == true) {
+              if (check) {
+                this.$router.push("/user/home");
+              } else {
+                auth.currentUser.delete();
+                this.issue = "Please Use an Institution Mail Id";
+                this.denied = true;
+              }
+            } else {
+              this.denied = true;
+              this.issue = "An Account Already Exist, Please Sign In";
+            }
+          });
+      }
+    },
+
     async SignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
 
-      if(this.alert == false){
-     await firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-          const email_id = result.user.email;
-          const check = email_id.includes("kpriet.ac.in");
-          if (check) {
-            console.log(result.user);
-            this.$router.push("/user/home");
-          } else {
-            auth.currentUser.delete()
-           this.denied = true
-            
-            // console.log(result.user);
-          }
-          // console.log(result.user.email);
-        });
+      if (this.alert == false) {
+        await firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            const email_id = result.user.email;
+            const check = email_id.includes("kpriet.ac.in");
+            if (result.additionalUserInfo.isNewUser == false) {
+              if (check) {
+                this.$router.push("/user/home");
+              } else {
+                auth.currentUser.delete();
+                this.issue = "Please Use an Institution Mail Id";
+                this.denied = true;
+              }
+            } else {
+              this.issue = "You Don't have an Account, Please Sign Up";
+              this.denied = true;
+            }
+          });
       }
     },
   },
@@ -276,7 +322,7 @@ export default defineComponent({
 .q-field {
   position: relative;
   font-size: 18px;
-  top: -4px;
+  /* top: -4px; */
   font-size: 14px;
 }
 

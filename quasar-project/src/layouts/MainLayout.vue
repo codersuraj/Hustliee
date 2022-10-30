@@ -6,6 +6,38 @@
           <q-avatar size="38px">
             <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
           </q-avatar>
+          <q-popup-proxy>
+            <q-banner
+              style="height: inherit; width: 100%"
+              class="black-r-bg justify-center"
+            >
+              <template v-slot:avatar>
+                <div
+                  class="justify-center column items-center"
+                  style="height: 20vh; width: 300px"
+                >
+                  <div>
+                    <q-avatar size="38px">
+                      <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+                    </q-avatar>
+                  </div>
+                  <div>
+                    <p class="text-white q-mt-md text-center">
+                      You are logged in as 21ee038@kpriet.ac.in
+                    </p>
+                    <q-btn
+                      label="Logout"
+                      padding="12px 0px"
+                      size="18px"
+                      class="bg-prime fw-bold button q-mt-lg"
+                      text-color="black"
+                      @click="signOut()"
+                    ></q-btn>
+                  </div>
+                </div>
+              </template>
+            </q-banner>
+          </q-popup-proxy>
         </q-btn>
         <q-space />
         <q-btn>
@@ -42,28 +74,28 @@
         </transition>
       </router-view>
     </div>
-    <q-tabs v-model="tab" align="justify" class="q-my-md ">
+    <q-tabs v-model="tab" align="justify" class="q-my-md">
       <div>
-      <router-link to="/history" style="text-decoration: none">
-        <q-tab name="history">
-          <img
-            src="../assets/diagram.svg"
-            :class="{ active: this.tab == 'history' }"
-            alt="History"
-          />
-        </q-tab>
-      </router-link>
+        <router-link to="/history" style="text-decoration: none">
+          <q-tab name="history">
+            <img
+              src="../assets/diagram.svg"
+              :class="{ active: this.tab == 'history' }"
+              alt="History"
+            />
+          </q-tab>
+        </router-link>
       </div>
       <div>
-      <router-link to="/staff/home" style="text-decoration: none">
-        <q-tab name="home">
-          <img
-            src="../assets/home.svg"
-            :class="{ svg, active: this.tab == 'home' }"
-            alt="Home"
-          />
-        </q-tab>
-      </router-link>
+        <router-link to="/staff/home" style="text-decoration: none">
+          <q-tab name="home">
+            <img
+              src="../assets/home.svg"
+              :class="{ svg, active: this.tab == 'home' }"
+              alt="Home"
+            />
+          </q-tab>
+        </router-link>
       </div>
       <router-link to="/staff/home" style="text-decoration: none">
         <q-tab name="settings"
@@ -79,12 +111,17 @@
 
 <script>
 import { route } from "quasar/wrappers";
+import router from "src/router";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { db, auth } from "../../firestore/firestore";
 
 export default {
   data() {
     let isActive = false;
+    return {
+      dense: true,
+    };
   },
   setup() {
     return {
@@ -95,9 +132,16 @@ export default {
     toggle() {
       this.isActive = !this.isActive;
     },
+    async signOut() {
+      await auth
+        .signOut()
+        .then((result) => {
+          this.$router.push("/");
+        })
+        .catch((err) => {});
+    },
   },
   beforeRouteLeave(to, from, next) {
-    console.log("hi");
     if (to === "/history") {
       this.tab = "history";
     } else if (to === "/staff/home") {
@@ -133,6 +177,12 @@ export default {
   height: 130px;
 }
 
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .logout-bar {
   height: 45px;
 }
@@ -144,7 +194,6 @@ export default {
   display: flex;
   margin-inline: 25px;
   justify-content: space-between;
-
 }
 
 .space {
@@ -166,12 +215,12 @@ export default {
   border-radius: 10px 10px 0 0;
 }
 
-:deep(.q-tab .q-ripple){
+:deep(.q-tab .q-ripple) {
   appearance: none;
   display: none;
 }
 
-:deep(.q-focus-helper){
+:deep(.q-focus-helper) {
   background: transparent;
   opacity: 0;
 }
