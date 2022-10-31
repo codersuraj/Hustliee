@@ -241,17 +241,20 @@ export default defineComponent({
           .then((result) => {
             const email_id = result.user.email;
             const check = email_id.includes("kpriet.ac.in");
-            if (result.additionalUserInfo.isNewUser == true) {
-              if (check) {
-                this.$router.push("/user/home");
+
+            if (check) {
+              this.$router.push("/user/home");
+              if (result.additionalUserInfo.isNewUser == false) {
+                console.log(result.additionalUserInfo.isNewUser);
               } else {
-                auth.currentUser.delete();
-                this.issue = "Please Use an Institution Mail Id";
                 this.denied = true;
+                console.log(result.additionalUserInfo.isNewUser);
+                this.issue = "An Account Already Exist, Please Sign In";
               }
             } else {
+              auth.currentUser.delete();
+              this.issue = "Please Use an Institution Mail Id";
               this.denied = true;
-              this.issue = "An Account Already Exist, Please Sign In";
             }
           });
       }
@@ -267,14 +270,16 @@ export default defineComponent({
           .then((result) => {
             const email_id = result.user.email;
             const check = email_id.includes("kpriet.ac.in");
-            if (result.additionalUserInfo.isNewUser == false) {
-              if (check) {
-                this.$router.push("/user/home");
-              } else {
-                auth.currentUser.delete();
-                this.issue = "Please Use an Institution Mail Id";
-                this.denied = true;
-              }
+
+            if (check) {
+              this.$router.push("/user/home");
+            } else {
+              auth.currentUser.delete();
+              this.issue = "Please Use an Institution Mail Id";
+              this.denied = true;
+            }
+
+            if (result.additionalUserInfo.isNewUser == true) {
             } else {
               this.issue = "You Don't have an Account, Please Sign Up";
               this.denied = true;
