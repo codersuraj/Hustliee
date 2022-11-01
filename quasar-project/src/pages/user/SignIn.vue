@@ -244,7 +244,7 @@ export default defineComponent({
 
             if (check) {
               this.$router.push("/user/home");
-              if (result.additionalUserInfo.isNewUser == false) {
+              if (result.additionalUserInfo.isNewUser == true) {
                 console.log(result.additionalUserInfo.isNewUser);
               } else {
                 this.denied = true;
@@ -271,15 +271,14 @@ export default defineComponent({
             const email_id = result.user.email;
             const check = email_id.includes("kpriet.ac.in");
 
-            if (check) {
-              this.$router.push("/user/home");
-            } else {
-              auth.currentUser.delete();
-              this.issue = "Please Use an Institution Mail Id";
-              this.denied = true;
-            }
-
-            if (result.additionalUserInfo.isNewUser == true) {
+            if (result.additionalUserInfo.isNewUser == false) {
+              if (check) {
+                this.$router.push("/user/home");
+              } else {
+                auth.currentUser.delete();
+                this.issue = "Please Use an Institution Mail Id";
+                this.denied = true;
+              }
             } else {
               this.issue = "You Don't have an Account, Please Sign Up";
               this.denied = true;

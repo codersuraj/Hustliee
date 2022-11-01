@@ -33,7 +33,7 @@ export default route(function (/* { store, ssrContext } */) {
   var loggedIn = false;
 
 
-  function state() {
+   function  state() {
 
     if (auth.currentUser) {
       loggedIn = true
