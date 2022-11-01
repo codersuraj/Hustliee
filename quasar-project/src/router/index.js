@@ -30,30 +30,28 @@ export default route(function (/* { store, ssrContext } */) {
 
 
 
-var loggedIn = false;
+  var loggedIn = false;
 
 
-   async function state() {
+  function state() {
 
-   await auth.onAuthStateChanged((user) => {
-  if (user) {
-    loggedIn = true
-    console.log("logg");
-  }
-  else {
-    loggedIn = false
-    console.log("out");
-  }
-    })
+    if (auth.currentUser) {
+      loggedIn = true
+      console.log("logg");
     }
+    else {
+      loggedIn = false
+      console.log("out");
+    }
+  }
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
 
     state()
-    console.log(loggedIn);
 
-    if (to.meta.auth && !loggedIn)
-    {
+    console.log("loggedIn", loggedIn, auth.currentUser);
+
+    if (to.meta.auth && !loggedIn) {
       console.log('out be');
       next('/');
     }
