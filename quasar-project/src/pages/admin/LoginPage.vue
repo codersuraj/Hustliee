@@ -32,7 +32,7 @@
                     :key="item"
                   >
                     <q-item-section>
-                      <q-item-label ref="dept">{{ item }}</q-item-label>
+                      <q-item-label>{{ item }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -74,15 +74,7 @@
             <p class="font-regular grey-fg text-center q-mt-md">Email</p>
             <div class="q-mt-md">
               <div
-                class="
-                  q-px-sm
-                  grey-bg
-                  input
-                  br-secondary
-                  font-semi-medium
-                  q-pb-xl
-                  shadow-6
-                "
+                class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
               >
                 <q-input
                   ref="inputRef"
@@ -196,8 +188,7 @@ export default defineComponent({
 
   methods: {
     onItemClick(e) {
-      console.log(this.$refs.dept.innerHTML);
-      // this.dept = this.$refs.dept.value;
+      this.dept = e.target.innerHTML;
     },
 
     submitForm() {
@@ -228,7 +219,7 @@ export default defineComponent({
                 var data = doc.data();
 
                 data.email.forEach((mail) => {
-                  console.log(mail);
+                  console.log(data.email);
                 });
               } else {
                 // doc.data() will be undefined in this case
