@@ -199,6 +199,7 @@ export default defineComponent({
       console.log(this.$refs.dept.innerHTML);
       // this.dept = this.$refs.dept.value;
     },
+
     submitForm() {
       this.v$.$validate();
       if (this.v$.$error) {
