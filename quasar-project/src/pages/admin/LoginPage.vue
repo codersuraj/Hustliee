@@ -32,7 +32,7 @@
                     :key="item"
                   >
                     <q-item-section>
-                      <q-item-label>{{ item }}</q-item-label>
+                      <q-item-label ref="dept">{{ item }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -74,7 +74,15 @@
             <p class="font-regular grey-fg text-center q-mt-md">Email</p>
             <div class="q-mt-md">
               <div
-                class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
+                class="
+                  q-px-sm
+                  grey-bg
+                  input
+                  br-secondary
+                  font-semi-medium
+                  q-pb-xl
+                  shadow-6
+                "
               >
                 <q-input
                   ref="inputRef"
@@ -144,10 +152,6 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { db, auth } from "../../../firestore/firestore";
 import firebase from "firebase";
-const actionCodeSettings = {
-  url: "https://router.vuejs.org/guide/advanced/navigation-guards.html",
-  handleCodeInApp: true,
-};
 
 export default defineComponent({
   name: "LoginPage",
@@ -167,6 +171,7 @@ export default defineComponent({
   },
 
   data() {
+    // var list_name = this.$refs.dept.innerHTML;
     return {
       v$: useVuelidate(),
       name: "a",
@@ -175,6 +180,10 @@ export default defineComponent({
       email: "",
       password: "",
       alert: false,
+      actionCodeSettings: {
+        url: "https://router.vuejs.org/guide/advanced/navigation-guards.html",
+        handleCodeInApp: true,
+      },
     };
   },
   validations() {
@@ -187,7 +196,8 @@ export default defineComponent({
 
   methods: {
     onItemClick(e) {
-      this.dept = e.target.innerHTML;
+      console.log(this.$refs.dept.innerHTML);
+      // this.dept = this.$refs.dept.value;
     },
     submitForm() {
       this.v$.$validate();
@@ -201,15 +211,51 @@ export default defineComponent({
       console.log(this.email);
       firebase
         .auth()
-        .sendSignInLinkToEmail(this.email, actionCodeSettings)
+        .sendSignInLinkToEmail(this.email, this.$data.actionCodeSettings)
         .then(() => {
           console.log("The link was successfully sent");
-          window.localStorage.setItem("emailForSignIn", email);
+          window.localStorage.setItem("emailForSignIn", this.email);
+          // const email_id = result.user.email;
+
+          var docRef = db.collection("emails").doc("jncpSsWnopm08ldtwrSt");
+
+          docRef
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                console.log("Document data:", doc.data());
+                var data = doc.data();
+
+                data.email.forEach((mail) => {
+                  console.log(mail);
+                });
+              } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+              }
+            })
+            .catch((error) => {
+              console.log("Error getting document:", error);
+            });
+          // if (check) {
+          //   this.$router.push("/staff/home");
+          //   if (result.additionalUserInfo.isNewUser == true) {
+          //     console.log(result.additionalUserInfo.isNewUser);
+          //   } else {
+          //     this.denied = true;
+          //     console.log(result.additionalUserInfo.isNewUser);
+          //     this.issue = "An Account Already Exist, Please Sign In";
+          //   }
+          // } else {
+          //   auth.currentUser.delete();
+          //   this.issue = "Please Use an Institution Mail Id";
+          //   this.denied = true;
+          // }
         })
         .catch((error) => {
-          // const errorCode = error.code;
-          // const errorMessage = error.message;
-          console.log("Not working");
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // console.log(errorMessage);
         });
     },
   },
