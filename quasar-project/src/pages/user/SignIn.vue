@@ -325,7 +325,6 @@ export default defineComponent({
 
 .q-field {
   position: relative;
-  font-size: 18px;
   /* top: -4px; */
   font-size: 14px;
 }
