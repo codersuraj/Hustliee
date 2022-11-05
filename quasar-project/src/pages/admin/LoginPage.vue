@@ -30,7 +30,7 @@
                 <q-list separator class="br-primary">
                   <q-item clickable v-close-popup @click="onItemClick_name" class="button" v-for="item in name_list" :key="item">
                     <q-item-section>
-                      <q-item-label>{{ indexOf(item.name) }}</q-item-label>
+                        <q-item-label>{{ item.name }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -127,7 +127,7 @@ export default defineComponent({
   },
   watch: {
     dept(newq, oldq) {
-      if (!oldq.includes(' ')) {
+      if (!newq.includes(' ')) {
         console.log("hi");
         this.name_list = []
         var docRef = db.collection("emails").doc(this.dept);
@@ -141,7 +141,7 @@ export default defineComponent({
           //   this.name_list.push(name.name)
           //         console.log(name.email);
           //       });
-          console.log("Cached document data:", doc.data());
+          console.log("Cached document data:", );
         }).catch((error) => {
           console.log("Error getting cached document:", error);
         });
@@ -183,26 +183,26 @@ export default defineComponent({
           window.localStorage.setItem("emailForSignIn", this.email);
           // const email_id = result.user.email;
 
-          var docRef = db.collection("emails").doc("jncpSsWnopm08ldtwrSt");
+          // var docRef = db.collection("emails").doc("jncpSsWnopm08ldtwrSt");
 
-          docRef
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                console.log("Document data:", doc.data());
-                var data = doc.data();
+          // docRef
+          //   .get()
+          //   .then((doc) => {
+          //     if (doc.exists) {
+          //       console.log("Document data:", doc.data());
+          //       var data = doc.data();
 
-                data.email.forEach((mail) => {
-                  console.log(data.email);
-                });
-              } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-              }
-            })
-            .catch((error) => {
-              console.log("Error getting document:", error);
-            });
+          //       data.email.forEach((mail) => {
+          //         console.log(data.email);
+          //       });
+          //     } else {
+          //       // doc.data() will be undefined in this case
+          //       console.log("No such document!");
+          //     }
+          //   })
+            // .catch((error) => {
+            //   console.log("Error getting document:", error);
+            // });
           // if (check) {
           //   this.$router.push("/staff/home");
           //   if (result.additionalUserInfo.isNewUser == true) {
