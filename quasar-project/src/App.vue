@@ -4,16 +4,12 @@
 
 <script>
 import { defineComponent } from "vue";
+import router from "src/router";
 import { db, auth } from "../firestore/firestore";
+
 
 export default defineComponent({
   name: "App",
-  beforeMount() {
-    if (auth.currentUser) {
-      this.$router.push("/");
-    } else {
-      this.$router.push("/user/home");
-    }
-  },
+
 });
 </script>

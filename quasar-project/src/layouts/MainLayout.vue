@@ -137,8 +137,11 @@ export default {
         .signOut()
         .then((result) => {
           this.$router.push("/");
+          console.log("Signout Succesfull");
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log("Signout Failed");
+        });
     },
   },
   beforeRouteLeave(to, from, next) {
@@ -149,7 +152,19 @@ export default {
     }
     next();
   },
-
+  // beforeMount() {
+  //   auth.onAuthStateChanged((user) => {
+  //     if (user && this.$store.state.denied) {
+  //       // User is signed in.
+  //       console.log("sign in");
+  //       this.$router.push("/user/home");
+  //     } else {
+  //       // No user is signed in.
+  //       this.$router.push("/");
+  //       console.log("signout");
+  //     }
+  //   });
+  // },
 };
 </script>
 

@@ -31,23 +31,52 @@
                 </q-input>
               </div>
             </div>
-            <p
-              class="font-regular grey-fg text-center"
-              style="margin-top: 18px"
-            >
-              Roll No
-            </p>
-            <div class="q-mt-md">
-              <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
-                <q-input
-                  ref="inputRef"
-                  :rules="[myRule]"
-                  borderless
-                  v-model="rollno"
-                  :dense="dense"
-                  autofocus
-                  mask="##AA###"
-                />
+            <div style="width: 100%; height: 100%" class="flex">
+              <div>
+                <p
+                  class="font-regular grey-fg text-center"
+                  style="margin-top: 18px"
+                >
+                  Roll No
+                </p>
+                <div class="q-mt-md q-pr-md">
+                  <div
+                    class="q-px-md grey-bg input br-secondary q-pb-xl center"
+                  >
+                    <q-input
+                      ref="inputRef"
+                      :rules="[myRule]"
+                      borderless
+                      v-model="roll_no"
+                      :dense="this.dense"
+                      autofocus
+                      mask="##AA###"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p
+                  class="font-regular grey-fg text-center"
+                  style="margin-top: 18px"
+                >
+                  Section
+                </p>
+                <div class="q-mt-md q-pr-md">
+                  <div
+                    class="q-px-md grey-bg input br-secondary q-pb-xl center"
+                  >
+                    <q-input
+                      ref="inputRef"
+                      :rules="[myRule]"
+                      borderless
+                      v-model="section"
+                      :dense="this.dense"
+                      autofocus
+                      mask="A"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div class="flex">
@@ -158,8 +187,10 @@ import { defineComponent, ref } from "vue";
 
 import { db, auth } from "../../../firestore/firestore";
 import firebase from "firebase";
+import { collection, addDoc } from "firebase/firestore";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import store from "../../store/store";
 
 import router from "src/router";
 
@@ -187,21 +218,22 @@ export default defineComponent({
       dept_name_item: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
       name: "",
-      rollno: "",
+      roll_no: "",
       model: "",
       year: "",
+      denied: false,
       dept_name: "",
       alert: false,
-      denied: false,
       dense: true,
       issue: "",
+      section: "",
     };
   },
   validations() {
     return {
       name: { required },
       dept_name_item: { required },
-      rollno: { required },
+      roll_no: { required },
       year: { required },
     };
   },
@@ -209,18 +241,23 @@ export default defineComponent({
     onItemClick(e) {
       this.dept_name_item = e.target.innerHTML;
     },
-    saveData() {
+    async saveData(email_id) {
+      console.log("auth");
+
       db.collection("students")
         .add({
           name: this.name,
-          rollno: this.rollno,
+          rollno: this.roll_no,
+          section: this.section,
           year: this.year,
+          dept: this.dept_name_item,
+          email: email_id,
         })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
+        .then(() => {
+          console.log("Document successfully written!");
         })
         .catch((error) => {
-          console.error("Error adding document: ", error);
+          console.error("Error writing document: ", error);
         });
     },
     submitForm() {
@@ -243,18 +280,20 @@ export default defineComponent({
             const check = email_id.includes("kpriet.ac.in");
 
             if (check) {
-              this.$router.push("/user/home");
               if (result.additionalUserInfo.isNewUser == true) {
-                console.log(result.additionalUserInfo.isNewUser);
+                this.saveData(email_id);
+                this.$router.push("/user/home");
+                console.log(store.state.denied);
               } else {
-                this.denied = true;
-                console.log(result.additionalUserInfo.isNewUser);
+                store.state.denied = true;
+                console.log(store.state.denied);
                 this.issue = "An Account Already Exist, Please Sign In";
               }
             } else {
               auth.currentUser.delete();
               this.issue = "Please Use an Institution Mail Id";
-              this.denied = true;
+              this.denied = true
+              
             }
           });
       }
@@ -270,8 +309,8 @@ export default defineComponent({
           .then((result) => {
             const email_id = result.user.email;
             const check = email_id.includes("kpriet.ac.in");
-
-            if (result.additionalUserInfo.isNewUser == false) {
+            console.log(store.state.denied);
+            if (result.additionalUserInfo.isNewUser == true) {
               if (check) {
                 this.$router.push("/user/home");
               } else {
@@ -286,6 +325,20 @@ export default defineComponent({
           });
       }
     },
+  },
+  beforeUnmount() {
+    auth.onAuthStateChanged((user) => {
+      if (user && !store.state.denied) {
+        // User is signed in.
+        console.log("sign in");
+        this.$router.push("/user/home");
+      } else {
+        // No user is signed in.
+        // this.$router.push("/");
+        this.issue = "Please Use an Institution Mail Id";
+        console.log("signout");
+      }
+    });
   },
 });
 </script>
