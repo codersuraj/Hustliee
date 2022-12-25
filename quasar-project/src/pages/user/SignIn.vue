@@ -247,6 +247,7 @@ export default defineComponent({
       dense: true,
       issue: "",
       section: "",
+      email: "",
     };
   },
   validations() {
@@ -273,24 +274,24 @@ export default defineComponent({
     },
 
     sendOTP() {
-      email = this.roll_no + "@kpriet.ac.in";
-      console.log(email);
+      this.email = this.roll_no + "@kpriet.ac.in";
+      console.log(this.email);
 
-      this.axios
-        .post("http://localhost:8000/yourPostApi", {
+      axios
+        .post("http://localhost:8000/sendotp", {
           name: this.name,
-
-          email: email,
-        })
+          email: this.email,
+        },
+        { headers: { "Content-Type" : "application/json"}})
 
         .then(function (response) {
           console.log(response.data);
-          currentObj.output = response.data;
+          // this.output = response.data;
         })
 
         .catch(function (error) {
           console.log(error);
-          currentObj.output = error;
+          // currentObj.output = error;
         });
     },
   },
