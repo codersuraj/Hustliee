@@ -104,7 +104,7 @@
                 </div>
               </div>
 
-              <div class="input-2">
+              <div class="input-2 q-mb-xl">
                 <p
                   class="font-regular grey-fg text-center"
                   style="margin-top: 18px"
@@ -140,11 +140,33 @@
                   </q-btn-dropdown>
                 </div>
               </div>
+              <div style="width: 100%" class="q-mt-md">
+                <p
+                  class="font-regular grey-fg text-center"
+                  style="margin-top: 18px"
+                >
+                  Email
+                </p>
+              </div>
+              <div class="q-mt-md q-pr-md">
+                <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
+                  <q-input
+                    ref="inputRef"
+                    :rules="[myRule]"
+                    borderless
+                    v-model="roll_no"
+                    :dense="this.dense"
+                    autofocus
+                    suffix="@kpriet.ac.in"
+                    mask="##AA###"
+                  />
+                </div>
+              </div>
             </div>
 
             <div style="margin-top: 100px" class="q-px-lg">
               <p
-                class="text-red-4 q-mt-lg q-mb-md text-center"
+                class="text-red-4 q-mt-md q-mb-md text-center"
                 style=""
                 v-show="alert"
               >
@@ -157,10 +179,7 @@
                 class="bg-prime fw-bold button shadow-6"
                 text-color="black"
                 label="Sign up"
-                @click="
-                  submitForm();
-                  SignUp();
-                "
+                @click="sendOTP()"
               />
               <p class="grey-fg text-center font-small q-mt-lg">
                 Already have an account?
@@ -190,7 +209,8 @@ import firebase from "firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import store from "../../store/store";
+
+import axios from "axios";
 
 import router from "src/router";
 
@@ -234,6 +254,7 @@ export default defineComponent({
       name: { required },
       dept_name_item: { required },
       roll_no: { required },
+      section: { required },
       year: { required },
     };
   },
@@ -241,25 +262,7 @@ export default defineComponent({
     onItemClick(e) {
       this.dept_name_item = e.target.innerHTML;
     },
-    async saveData(email_id) {
-      console.log("auth");
 
-      db.collection("students")
-        .add({
-          name: this.name,
-          rollno: this.roll_no,
-          section: this.section,
-          year: this.year,
-          dept: this.dept_name_item,
-          email: email_id,
-        })
-        .then(() => {
-          console.log("Document successfully written!");
-        })
-        .catch((error) => {
-          console.error("Error writing document: ", error);
-        });
-    },
     submitForm() {
       this.v$.$validate();
       if (this.v$.$error) {
@@ -268,74 +271,41 @@ export default defineComponent({
         this.alert = false;
       }
     },
-    async SignUp() {
-      const provider = new firebase.auth.GoogleAuthProvider();
 
-      if (this.alert == false) {
-        await firebase
-          .auth()
-          .signInWithPopup(provider)
-          .then((result) => {
-            const email_id = result.user.email;
-            const check = email_id.includes("kpriet.ac.in");
+    sendOTP() {
+      email = this.roll_no + "@kpriet.ac.in";
+      console.log(email);
 
-            if (check) {
-              if (result.additionalUserInfo.isNewUser == true) {
-                this.saveData(email_id);
-                this.$router.push("/user/home");
-                console.log(store.state.denied);
-              } else {
-                store.state.denied = true;
-                console.log(store.state.denied);
-                this.issue = "An Account Already Exist, Please Sign In";
-              }
-            } else {
-              auth.currentUser.delete();
-              this.issue = "Please Use an Institution Mail Id";
-              this.denied = true
-              
-            }
-          });
-      }
-    },
+      this.axios
+        .post("http://localhost:8000/yourPostApi", {
+          name: this.name,
 
-    async SignIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
+          email: email,
+        })
 
-      if (this.alert == false) {
-        await firebase
-          .auth()
-          .signInWithPopup(provider)
-          .then((result) => {
-            const email_id = result.user.email;
-            const check = email_id.includes("kpriet.ac.in");
-            console.log(store.state.denied);
-            if (result.additionalUserInfo.isNewUser == true) {
-              if (check) {
-                this.$router.push("/user/home");
-              } else {
-                auth.currentUser.delete();
-                this.issue = "Please Use an Institution Mail Id";
-                this.denied = true;
-              }
-            } else {
-              this.issue = "You Don't have an Account, Please Sign Up";
-              this.denied = true;
-            }
-          });
-      }
+        .then(function (response) {
+          console.log(response.data);
+          currentObj.output = response.data;
+        })
+
+        .catch(function (error) {
+          console.log(error);
+          currentObj.output = error;
+        });
     },
   },
+
   beforeUnmount() {
     auth.onAuthStateChanged((user) => {
-      if (user && !store.state.denied) {
+      if (user) {
         // User is signed in.
+
         console.log("sign in");
         this.$router.push("/user/home");
       } else {
         // No user is signed in.
-        // this.$router.push("/");
-        this.issue = "Please Use an Institution Mail Id";
+
+        this.$router.push("/");
         console.log("signout");
       }
     });
