@@ -248,6 +248,9 @@ export default defineComponent({
       issue: "",
       section: "",
       email: "",
+      data: null,
+      spam: "",
+      dataLength:null,
     };
   },
   validations() {
@@ -278,9 +281,9 @@ export default defineComponent({
       console.log(this.email);
 
       axios
-        .post("http://localhost:8000/sendotp", {
+        .post("http://localhost:3000/sendotp", {
           name: this.name,
-          email: this.email,
+          email: this.email.toLowerCase(),
         },
         { headers: { "Content-Type" : "application/json"}})
 
@@ -289,8 +292,14 @@ export default defineComponent({
           // this.output = response.data;
         })
 
-        .catch(function (error) {
-          console.log(error);
+        .catch((error) => {
+          console.log(error.response.data);
+          if ((Object.keys(error.response.data).length) <= 2) {
+            this.denied = true
+            this.issue = error.response.data.error
+
+          }
+          
           // currentObj.output = error;
         });
     },
