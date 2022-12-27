@@ -8,4 +8,9 @@
 export default {};
 </script>
 
-<style></style>
+<style scoped>
+#auth {
+  width: 100%;
+  height: 100vh;
+}
+</style>

@@ -1,67 +1,19 @@
 <template>
-  <q-layout class="dark-bg">
-    <q-page-container>
-      <q-page class="ma-y-40 vertical-align">
-        <q-card class="my-card semidark-bg br-primary pa-interior">
-          <q-card-section class="q-pa-none">
-            <p class="font-regular text-white text-center">Set Password</p>
-            <div class="q-mt-md q-px-md">
-              <div class="q-px-md grey-bg input br-secondary q-pb-xl">
-                <q-input
-                  :dense="dense"
-                  borderless
-                  v-model="password"
-                  :type="isPwd ? 'password' : 'text'"
-                >
-                  <template v-slot:append>
-                    <q-icon
-                      :name="isPwd ? 'visibility_off' : 'visibility'"
-                      class="cursor-pointer"
-                      @click="isPwd = !isPwd"
-                    />
-                  </template>
-                </q-input>
-              </div>
-            </div>
-            <p
-              class="font-regular text-white text-center"
-              style="margin-top: 18px"
-            >
-              Enter OTP
-            </p>
-            <div class="q-mt-md q-px-md">
-              <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
-                <q-input
-                  borderless
-                  v-model="text"
-                  :dense="dense"
-                  autofocus
-                  mask="#-#-#-#-#-#"
-                />
-              </div>
-            </div>
-            <div style="margin-top: 46px">
-              <q-btn
-                padding="8px 0px"
-                size="25px"
-                v-model="otp"
-                class="bg-prime fw-bold button"
-                text-color="black"
-                label="SIGN IN"
-              />
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+  <div class="dark-bg page q-px-lg">
+    <SignIn @clicked="emailVerify" :authorized="verified" />
+  </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import SignIn from "../../components/SignIn.vue";
+import firebase from "firebase";
+// import { db, auth } from "firebase/firestore";
+import { collection, query, where } from "firebase/firestore";
 
 export default defineComponent({
   name: "LoginPage",
+  components: { SignIn },
   setup() {
     return {
       isPwd: ref(true),
@@ -69,48 +21,43 @@ export default defineComponent({
     };
   },
   data() {
-    return {};
+    return {
+      verified: false,
+    };
   },
 
   methods: {
     onItemClick(e) {
       this.dept = e.target.innerHTML;
     },
+    async emailVerify(email) {
+      const db = firebase.firestore();
+      db.collection("staffs")
+        .where("email", "==", email)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            console.log("hello", email, this.verified);
+            this.verified = true;
+            console.log("hello", this.verified);
+          });
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    },
   },
 });
 </script>
 
 <style scoped>
-.my-card {
+.page {
   width: 100%;
-  height: 353px;
-  /* max-width: 250px; */
-}
-
-.vertical-align {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.input {
-  width: 100%;
-  height: 42px;
-}
-
-.q-field {
-  position: relative;
-  font-size: 18px;
-  top: -4px;
 }
 </style>

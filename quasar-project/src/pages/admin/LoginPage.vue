@@ -4,16 +4,33 @@
       <q-page class="ma-y-40 vertical-align">
         <q-card class="my-card semidark-bg br-primary pa-interior">
           <q-card-section class="q-pa-none">
-            <p class="fw-semibold text-center text-white" style="font-size: 30px; top: -10px; position: relative">
+            <p
+              class="fw-semibold text-center text-white"
+              style="font-size: 30px; top: -10px; position: relative"
+            >
               SIGN UP
             </p>
             <p class="font-regular grey-fg text-center q-mt-md">Department</p>
             <div class="q-mt-md q-px-md">
-              <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6" no-caps
-                align="center" :label="this.dept" icon="" dropdown-icon="none">
+              <q-btn-dropdown
+                padding="6px 0px"
+                size="18px"
+                class="grey-bg button font-semi-medium shadow-6"
+                no-caps
+                align="center"
+                :label="this.dept"
+                icon=""
+                dropdown-icon="none"
+              >
                 <q-list separator class="br-primary">
-                  <q-item clickable v-close-popup @click="onItemClick" class="button" v-for="item in dept_list"
-                    :key="item">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="onItemClick"
+                    class="button"
+                    v-for="item in dept_list"
+                    :key="item"
+                  >
                     <q-item-section>
                       <q-item-label>{{ item }}</q-item-label>
                     </q-item-section>
@@ -21,16 +38,34 @@
                 </q-list>
               </q-btn-dropdown>
             </div>
-            <p class="font-regular grey-fg text-center" style="margin-top: 18px">
+            <p
+              class="font-regular grey-fg text-center"
+              style="margin-top: 18px"
+            >
               Name
             </p>
             <div class="q-mt-md q-px-md">
-              <q-btn-dropdown padding="6px 0px" size="18px" class="grey-bg button font-semi-medium shadow-6" no-caps
-                align="center" :label="this.name" icon="" dropdown-icon="none">
+              <q-btn-dropdown
+                padding="6px 0px"
+                size="18px"
+                class="grey-bg button font-semi-medium shadow-6"
+                no-caps
+                align="center"
+                :label="this.name"
+                icon=""
+                dropdown-icon="none"
+              >
                 <q-list separator class="br-primary">
-                  <q-item clickable v-close-popup @click="onItemClick_name" class="button" v-for="item in name_list" :key="item">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="onItemClick_name"
+                    class="button"
+                    v-for="item in name_list"
+                    :key="item"
+                  >
                     <q-item-section>
-                        <q-item-label>{{ item.name }}</q-item-label>
+                      <q-item-label>{{ item.name }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -38,8 +73,17 @@
             </div>
             <p class="font-regular grey-fg text-center q-mt-md">Email</p>
             <div class="q-mt-md">
-              <div class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6">
-                <q-input ref="inputRef" :rules="[myRule]" :dense="dense" borderless v-model="email" class="fw-semibold">
+              <div
+                class="q-px-sm grey-bg input br-secondary font-semi-medium q-pb-xl shadow-6"
+              >
+                <q-input
+                  ref="inputRef"
+                  :rules="[myRule]"
+                  :dense="dense"
+                  borderless
+                  v-model="email"
+                  class="fw-semibold"
+                >
                 </q-input>
               </div>
             </div>
@@ -64,17 +108,27 @@
               </div>
             </div> -->
 
-            <p class="text-red-4 q-mt-sm text-center" style="position: relative; bottom: -10px" v-show="alert">
+            <p
+              class="text-red-4 q-mt-sm text-center"
+              style="position: relative; bottom: -10px"
+              v-show="alert"
+            >
               *All Fields Are Required
             </p>
 
             <div style="margin-top: 46px" class="q-px-lg">
               <!-- <router-link to="/staff/signin" style="text-decoration: none"> -->
-              <q-btn padding="6px 0px" size="20px" class="bg-prime fw-bold button" text-color="black" label="NEXT"
+              <q-btn
+                padding="6px 0px"
+                size="20px"
+                class="bg-prime fw-bold button"
+                text-color="black"
+                label="NEXT"
                 @click="
-  submitForm();
-status();
-                " />
+                  submitForm();
+                  status();
+                "
+              />
               <!-- </router-link> -->
             </div>
           </q-card-section>
@@ -115,7 +169,7 @@ export default defineComponent({
       name: "",
       dept: "",
       dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
-      name_list:[],
+      name_list: [],
       email: "",
       password: "",
       alert: false,
@@ -127,31 +181,32 @@ export default defineComponent({
   },
   watch: {
     dept(newq, oldq) {
-      if (!newq.includes(' ')) {
+      if (!newq.includes(" ")) {
         console.log("hi");
-        this.name_list = []
+        this.name_list = [];
         var docRef = db.collection("emails").doc(this.dept);
 
-        docRef.get().then((snap) => {
+        docRef
+          .get()
+          .then((snap) => {
+            let data = snap.data();
 
-          let data = snap.data()
-
-          this.name_list = data.name
-          // data.name.forEach((name) => {
-          //   this.name_list.push(name.name)
-          //         console.log(name.email);
-          //       });
-          console.log("Cached document data:", );
-        }).catch((error) => {
-          console.log("Error getting cached document:", error);
-        });
-
+            this.name_list = data.name;
+            // data.name.forEach((name) => {
+            //   this.name_list.push(name.name)
+            //         console.log(name.email);
+            //       });
+            console.log("Cached document data:");
+          })
+          .catch((error) => {
+            console.log("Error getting cached document:", error);
+          });
       }
-    }
+    },
   },
   validations() {
     return {
-      name: { required },
+      // name: { required },
       dept: { required },
       email: { required },
     };
@@ -174,6 +229,7 @@ export default defineComponent({
       }
     },
     status() {
+      this.$router.push("/staff/home");
       console.log(this.email);
       firebase
         .auth()
@@ -200,9 +256,9 @@ export default defineComponent({
           //       console.log("No such document!");
           //     }
           //   })
-            // .catch((error) => {
-            //   console.log("Error getting document:", error);
-            // });
+          // .catch((error) => {
+          //   console.log("Error getting document:", error);
+          // });
           // if (check) {
           //   this.$router.push("/staff/home");
           //   if (result.additionalUserInfo.isNewUser == true) {
@@ -267,7 +323,7 @@ export default defineComponent({
   top: -4px;
 }
 
-:deep(.q-btn__content span){
+:deep(.q-btn__content span) {
   font-size: 14px;
 }
 

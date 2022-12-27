@@ -18,14 +18,14 @@
           <q-card-section class="q-pa-none">
             <p class="font-regular text-white text-center">Login as</p>
             <div style="margin-top: 15px">
-               <router-link to="/staff/login" style="text-decoration: none;"><q-btn
-                padding="8px 0px"
-                size="25px"
-                class="bg-prime fw-bold button"
-                text-color="black"
-                label="PROFESSOR"
+              <router-link to="/staff/login" style="text-decoration: none"
+                ><q-btn
+                  padding="8px 0px"
+                  size="25px"
+                  class="bg-prime fw-bold button"
+                  text-color="black"
+                  label="PROFESSOR"
               /></router-link>
-              
             </div>
             <p
               class="font-regular text-white text-center"
@@ -34,14 +34,14 @@
               Login as
             </p>
             <div style="margin-top: 15px">
-              <router-link to="/user/login" style="text-decoration:none;">
-              <q-btn
-                padding="8px 0px"
-                size="25px"
-                class="grey-bg fw-bold button"
-                text-color="black"
-                label="STUDENT"
-              />
+              <router-link to="/user/signup" style="text-decoration: none">
+                <q-btn
+                  padding="8px 0px"
+                  size="25px"
+                  class="grey-bg fw-bold button"
+                  text-color="black"
+                  label="STUDENT"
+                />
               </router-link>
             </div>
           </q-card-section>

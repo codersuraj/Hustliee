@@ -8,8 +8,9 @@ const routes = [
     children: [
       { path: '/', component: () => import('src/pages/HomePage.vue'),  meta: {auth:false} },
       { path: '/staff/login', component: () => import('src/pages/admin/LoginPage.vue') ,  meta: {auth:false}},
-      { path: '/staff/signin', component: () => import('src/pages/admin/SignIn.vue'),  meta: {auth:false} },
-      { path: '/user/login', component: () => import('src/pages/user/SignIn.vue'),  meta: {auth:false} }
+      // { path: '/staff/signin', component: () => import('src/pages/admin/SignIn.vue'),  meta: {auth:false} },
+      { path: '/user/signup', component: () => import('src/pages/user/SignIn.vue'),  meta: {auth:false}, props:true, },
+      { path: '/user/verify', component: () => import('src/pages/user/VerifyUser.vue'),  meta: {auth:false}, props:true,  },
     ]
   },
   {
