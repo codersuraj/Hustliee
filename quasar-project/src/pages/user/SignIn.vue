@@ -1,295 +1,105 @@
 <template>
-  <div v-if="!sendemail">
-    <q-layout class="dark-bg">
-      <q-page-container>
-        <q-page class="ma-y-40 vertical-align">
-          <q-card class="my-card semidark-bg br-primary pa-interior">
-            <q-card-section class="q-pa-none">
-              <div>
-                <p
-                  v-show="this.denied"
-                  class="text-center text-red-4 font-regular q-mb-md"
-                >
-                  {{ issue }}
-                </p>
-              </div>
-              <p
-                class="fw-semibold text-center text-white"
-                style="font-size: 30px; top: -10px; position: relative"
-              >
-                SIGN UP
-              </p>
-              <p class="font-regular grey-fg text-center q-mt-md">Name</p>
-              <div class="q-mt-md">
-                <div class="q-px-md grey-bg input br-secondary q-pb-xl">
-                  <q-input
-                    ref="inputRef"
-                    :rules="[myRule]"
-                    :dense="dense"
-                    borderless
-                    v-model="name"
-                  >
-                  </q-input>
-                </div>
-              </div>
-              <div style="width: 100%; height: 100%" class="flex">
-                <div>
-                  <p
-                    class="font-regular grey-fg text-center"
-                    style="margin-top: 18px"
-                  >
-                    Roll No
-                  </p>
-                  <div class="q-mt-md q-pr-md">
-                    <div
-                      class="q-px-md grey-bg input br-secondary q-pb-xl center"
-                    >
-                      <q-input
-                        ref="inputRef"
-                        :rules="[myRule]"
-                        borderless
-                        v-model="roll_no"
-                        :dense="this.dense"
-                        autofocus
-                        mask="##AA###"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p
-                    class="font-regular grey-fg text-center"
-                    style="margin-top: 18px"
-                  >
-                    Section
-                  </p>
-                  <div class="q-mt-md q-pr-md">
-                    <div
-                      class="q-px-md grey-bg input br-secondary q-pb-xl center"
-                    >
-                      <q-input
-                        ref="inputRef"
-                        :rules="[myRule]"
-                        borderless
-                        v-model="section"
-                        :dense="this.dense"
-                        autofocus
-                        mask="A"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="flex">
-                <div class="input-2">
-                  <p
-                    class="font-regular grey-fg text-center"
-                    style="margin-top: 18px"
-                  >
-                    Year
-                  </p>
-                  <div class="q-mt-md q-pr-md">
-                    <div
-                      class="q-px-md grey-bg input br-secondary q-pb-xl center"
-                    >
-                      <q-input
-                        ref="inputRef"
-                        :rules="[myRule]"
-                        borderless
-                        v-model="year"
-                        :dense="this.dense"
-                        autofocus
-                        mask="#"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="input-2 q-mb-xl">
-                  <p
-                    class="font-regular grey-fg text-center"
-                    style="margin-top: 18px"
-                  >
-                    Dept
-                  </p>
-                  <div class="q-mt-md">
-                    <q-btn-dropdown
-                      padding="6px 0px"
-                      size="16px"
-                      class="grey-bg button font-semi-medium shadow-6 dept-btn"
-                      no-caps
-                      :label="this.dept_name_item"
-                      icon=""
-                      dropdown-icon="none"
-                      ref="inputRef"
-                      :rules="[myRule]"
-                    >
-                      <q-list separator class="br-primary">
-                        <q-item
-                          clickable
-                          v-close-popup
-                          @click="onItemClick"
-                          class="button"
-                          v-for="item in dept_list"
-                          :key="item"
-                        >
-                          <q-item-section>
-                            <q-item-label>{{ item }}</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-btn-dropdown>
-                  </div>
-                </div>
-                <div style="width: 100%" class="q-mt-md">
-                  <p
-                    class="font-regular grey-fg text-center"
-                    style="margin-top: 18px"
-                  >
-                    Email
-                  </p>
-                </div>
-                <div class="q-mt-md q-pr-md">
-                  <div
-                    class="q-px-md grey-bg input br-secondary q-pb-xl center"
-                  >
-                    <q-input
-                      ref="inputRef"
-                      :rules="[myRule]"
-                      borderless
-                      v-model="roll_no"
-                      :dense="this.dense"
-                      autofocus
-                      suffix="@kpriet.ac.in"
-                      mask="##AA###"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div style="margin-top: 100px" class="q-px-lg">
-                <p
-                  class="text-red-4 q-mt-md q-mb-md text-center"
-                  style=""
-                  v-show="alert"
-                >
-                  *All Fields Are Required
-                </p>
-                <q-btn
-                  icon="fa-brands fa-google"
-                  padding="12px 0px"
-                  size="18px"
-                  class="bg-prime fw-bold button shadow-6"
-                  text-color="black"
-                  label="Sign up"
-                  @click="sendOTP()"
-                />
-                <p class="grey-fg text-center font-small q-mt-lg">
-                  Already have an account?
-                </p>
-                <q-btn
-                  icon="fa-brands fa-google"
-                  padding="12px 0px"
-                  size="18px"
-                  class="grey-bg fw-bold button shadow-6 q-mt-md"
-                  text-color="black"
-                  label="Sign in"
-                  @click="SignIn()"
-                />
-              </div>
-            </q-card-section>
-          </q-card>
-        </q-page>
-      </q-page-container>
-    </q-layout>
-  </div>
-  <div v-else>
-    <div class="dark-bg page q-px-xl">
-      <VerifyOTP :email="email" />
+  <div class="dark-bg page q-px-lg">
+    <div>
+      <p
+        v-show="this.denied"
+        class="text-center text-red-4 font-regular q-mb-md"
+      >
+        {{ issue }}
+      </p>
     </div>
+
+    <q-card class="my-card semidark-bg br-primary pa-interior">
+      <q-card-section class="q-pa-none">
+        <div v-if="!verified">
+          <p
+            class="font-regular text-white text-center"
+            style="margin-top: 18px"
+          >
+            Name
+          </p>
+          <div class="q-mt-md q-px-md q-mb-lg">
+            <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
+              <q-input borderless v-model="name" autofocus />
+            </div>
+          </div>
+          <p class="font-regular text-white text-center">Email</p>
+          <div class="q-mt-md q-px-md">
+            <div class="q-px-md grey-bg input br-secondary q-pb-xl">
+              <q-input
+                borderless
+                suffix="@kpriet.ac.in"
+                v-model="email"
+                autofocus
+               
+              >
+              </q-input>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <p class="font-regular text-white text-center" style="margin-top: ">
+            Enter OTP
+          </p>
+          <div class="q-mt-md q-px-md">
+            <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
+              <q-input borderless v-model="otp" autofocus  />
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 46px">
+          <q-btn
+            size="25px"
+            v-model="otp"
+            class="bg-prime fw-bold button"
+            text-color="black"
+            :label="buttonText"
+            @click="submitForm()"
+          />
+        </div>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
-import VerifyOTP from "../../components/VerifyOtp";
-
+// import SignIn from "../../components/SignIn.vue";
 import firebase from "firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { useVuelidate } from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
-
+import { db, auth } from "firebase/firestore";
 import axios from "axios";
-
-import router from "src/router";
-// import VerifyOtp from "src/components/VerifyOtp.vue";
+import { collection, query, where } from "firebase/firestore";
 
 export default defineComponent({
-  name: "LoginPage",
-  components: { VerifyOTP },
-  setup() {
-    const inputRef = ref(null);
-
-    return {
-      inputRef,
-      myRule(val) {
-        // simulating a delay
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(!!val || "");
-          }, 500);
-        });
-      },
-    };
-  },
+  name: "SignIn",
+  // components: { SignIn },
   data() {
     return {
-      v$: useVuelidate(),
-      dept_name_item: "",
-      dept_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
+      verified: false,
       name: "",
-      roll_no: "",
-      model: "",
-      year: "",
-      denied: false,
-      dept_name: "",
-      alert: false,
-      dense: true,
-      issue: "",
-      section: "",
+      otp: "",
       email: "",
-      data: null,
-      spam: "",
-      dataLength: null,
-      sendemail: false,
+      formatEmail:"",
+      buttonText: "Send OTP",
+      password:"12345678",
+
     };
   },
-  validations() {
-    return {
-      name: { required },
-      dept_name_item: { required },
-      roll_no: { required },
-      section: { required },
-      year: { required },
-    };
-  },
+
   methods: {
-    onItemClick(e) {
-      this.dept_name_item = e.target.innerHTML;
-    },
+
     submitForm() {
-      this.v$.$validate();
-      if (this.v$.$error) {
-        this.alert = true;
-      } else {
-        this.alert = false;
+      if (this.buttonText == "Send OTP") {
+        this.sendOTP()
+      } else if (this.buttonText == "Verify") {
+        this.verifyOTP()
       }
     },
-    sendOTP() {
-      this.email = this.roll_no + "@kpriet.ac.in";
+    async sendOTP() {
+          this.email = this.email + "@kpriet.ac.in"
       console.log(this.email);
 
-      axios
+      await axios
         .post(
           "http://localhost:3000/sendotp",
           {
@@ -298,9 +108,14 @@ export default defineComponent({
           },
           { headers: { "Content-Type": "application/json" } }
         )
-        .then(function (response) {
-          this.sendemail = true;
+        .then((response) => {
+
           console.log(response.data);
+          this.verified = true
+          this.buttonText = "Verify"
+
+          console.log(this.sendemail);
+
           // this.output = response.data;
         })
         .catch((error) => {
@@ -309,7 +124,7 @@ export default defineComponent({
             this.denied = true;
             this.issue = "ERR_NETWORK";
           }
-          console.log(error.code);
+          // console.log(error.code);
           if (Object.keys(error.response.data).length <= 2) {
             this.denied = true;
             this.issue = error.response.data.error;
@@ -317,6 +132,56 @@ export default defineComponent({
           // currentObj.output = error;
         });
     },
+       async verifyOTP() {
+      console.log(this.email.toLowerCase());
+      // this.formatEmail = this.email + "@kpriet.ac.in"
+      // if (typeof this.formatEmail === 'string') {
+      //   console.log(this.otp);
+      //   console.log("yeah");
+      // }
+
+     await axios
+        .post(
+          "http://localhost:3000/verify",
+          {
+            email: this.email,
+            otp: this.otp,
+          },
+          { headers: { "Content-Type": "application/json" } }
+        )
+
+        .then((response) => {
+          console.log(response.data);
+          this.SignIn()
+          // this.$router.push("/user/home");
+          // this.output = response.data;
+        })
+        .catch((error) => {
+          // this.$router.push("/");
+          console.log(error.response.data);
+          if (Object.keys(error.response.data).length <= 2) {
+            this.denied = true;
+            this.issue = error.response.data.error;
+          }
+
+          // currentObj.output = error;
+        });
+    },
+    async SignIn() {
+    await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+      .then((userCredential) => {
+        // Signed in
+        console.log("inside");
+        var user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        console.log("outside");
+        console.log(error);
+        var errorCode = error.code;
+        var errorMessage = error.message;
+      });
+},
   },
 });
 </script>
@@ -324,16 +189,18 @@ export default defineComponent({
 <style scoped>
 .page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.my-card {
+
+/* .my-card {
   width: 100%;
+  min-height: 200px;
   height: 100%;
-  /* max-width: 250px; */
-}
+  max-height: 420px;
+} */
 
 .vertical-align {
   display: flex;
@@ -347,6 +214,7 @@ export default defineComponent({
 
 .button {
   width: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
 }
@@ -356,37 +224,9 @@ export default defineComponent({
   height: 42px;
 }
 
-.input-2 {
-  width: 50%;
-  height: 42px;
-}
-
 .q-field {
   position: relative;
-  /* top: -4px; */
-  font-size: 14px;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.q-item {
-  padding: 0px;
-  min-height: 0px;
-}
-.q-item__label {
-  height: 30px;
-  padding: 6px;
-}
-
-.dept-btn {
-  min-height: 48px !important;
+  font-size: 18px;
+  top: -4px;
 }
 </style>

@@ -11,5 +11,10 @@ import { db, auth } from "../firestore/firestore";
 export default defineComponent({
   name: "App",
 
+  
+
 });
+
+
+
 </script>

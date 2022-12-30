@@ -16,14 +16,13 @@
         </p>
         <div class="q-mt-md q-px-md">
           <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
-            <q-input borderless v-model="otp" autofocus mask="#-#-#-#-#-#" />
+            <q-input borderless v-model="otp" autofocus  />
           </div>
         </div>
         <div style="margin-top: 46px">
           <q-btn
             padding="8px 0px"
             size="25px"
-            v-model="otp"
             class="bg-prime fw-bold button"
             text-color="black"
             label="Verify OTP"
@@ -42,7 +41,11 @@ import { db, auth } from "../../firestore/firestore";
 import axios from "axios";
 export default {
   name: "SignIn",
-  props: ["email"],
+  props: {
+    data: {
+      type: Object
+    }
+  },
   data() {
     return {
       //   v$: useVuelidate(),
@@ -52,29 +55,39 @@ export default {
       denied: false,
       show: true,
       formatEmail: "",
+      password: "12345678",
+      formatOtp: "",
+      // obj: {email: "", otp:""}
     };
   },
 
   methods: {
     submitForm() {
-      if ((this.otp = "" || this.otp.length < 11)) {
+      if ((this.otp == "" || this.otp.length < 6)) {
         this.denied = true;
         this.issue = "Invalid OTP";
       } else {
         this.denied = false;
-        console.log(this.email);
+        console.log(this.otp);
         this.verifyOTP();
       }
     },
 
     verifyOTP() {
-      this.formatEmail = this.email + "@kpriet.ac.in";
-      console.log(this.formatEmail);
+      console.log(this.data);
+      this.formatEmail = this.data.email;
+      console.log(this.formatEmail.toLowerCase());
+      // this.formatOtp = this.otp.toString()
+      // if (typeof this.formatEmail === 'string') {
+      //   console.log(this.otp);
+      //   console.log("yeah");
+      // }
+
       axios
         .post(
-          "http://localhost:3000/verifyotp",
+          "http://localhost:3000/verify",
           {
-            email: this.formatEmail.toLowerCase(),
+            email: this.data.email,
             otp: this.otp,
           },
           { headers: { "Content-Type": "application/json" } }
@@ -82,12 +95,12 @@ export default {
 
         .then((response) => {
           console.log(response.data);
-          this.$router.push("/user/home");
+          this.CreateAccount(this.data.email, this.password)
+          // this.$router.push("/user/home");
           // this.output = response.data;
         })
-
         .catch((error) => {
-          this.$router.push("/user/home");
+          // this.$router.push("/");
           console.log(error.response.data);
           if (Object.keys(error.response.data).length <= 2) {
             this.denied = true;
@@ -97,6 +110,41 @@ export default {
           // currentObj.output = error;
         });
     },
+    async signIn(email, password) {
+       await auth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+          // Signed in
+          console.log("inside");
+          var user = userCredential.user;
+          // ...
+          })
+            .catch((error) => {
+              console.log("outside");
+            console.log(error);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+          });
+    },
+    async CreateAccount(email, password) {
+     await  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in 
+      console.log(userCredential);
+      var user = userCredential.user;
+      // ...
+    })
+       .catch((error) => {
+         console.log(error);
+
+         console.log(error.code);
+         if (error.code == "auth/email-already-in-use") {
+            this.signIn(this.data.email, this.password)
+      }
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ..
+    });
+    }
   },
   beforeUnmount() {
     auth.onAuthStateChanged((user) => {

@@ -1,8 +1,13 @@
-
-import { route } from 'quasar/wrappers'
-import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory, routerKey } from 'vue-router'
+import {route} from 'quasar/wrappers'
+import {
+    createRouter,
+    createMemoryHistory,
+    createWebHistory,
+    createWebHashHistory,
+    routerKey
+} from 'vue-router'
 import routes from './routes'
-import { db, auth } from "../../firestore/firestore";
+import {db, auth} from "../../firestore/firestore";
 import Store from '../store/store'
 /*
  * If not building with SSR mode, you can
@@ -13,42 +18,52 @@ import Store from '../store/store'
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
+export default route(function ( /* { store, ssrContext } */
+) {
+    const createHistory = process.env.SERVER ? createMemoryHistory : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
 
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
+    const Router = createRouter({
+        scrollBehavior: () => (
+            {left: 0, top: 0}
+        ),
+        routes,
 
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
-  })
-
-
-
+        // Leave this as is and make changes in quasar.conf.js instead!
+        // quasar.conf.js -> build -> vueRouterMode
+        // quasar.conf.js -> build -> publicPath
+        history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
+    })
 
 
-  // Router.beforeEach(async (to, from, next) => {
+    // Router.beforeEach((to, from, next) => {
+    //     console.log("hello");
+    //     // auth.onAuthStateChanged((user) => {
+    //     console.log("hi");
+    //     // if (user) {
+    //     console.log("entered");
+    //     // User is signed in.
+    //     // if (to.meta.auth) {
+    //     //     console.log(to.meta.auth);
 
-  //   state()
+    //     next(to);
+    //     // }
+    //     // } else if (!to.meta.auth) {
+    //     //     console.log(!to.meta.auth);
 
-  //   console.log("loggedIn", loggedIn, auth.currentUser);
+    //     //     next('/user/home')
+    //     // } else {
+    //     //     console.log("else");
 
-  //   if (to.meta.auth && !loggedIn) {
-  //     console.log('out be');
-  //     next('/');
-  //   }
-  //   else if (!to.meta.auth && loggedIn) {
-  //     next('user/home')
-  //   }
-  //   else {
-  //     next()
-  //   }
-  // })
+    //     //     // No user is signed in.
+    //     //     next("/")
+    //     // }
+    //     // } else {
+    //     //     console.log("im a2");
+    //     //     // next(to)
+    //     // }
+    //     // })
 
-  return Router
+    // })
+
+    return Router
 })

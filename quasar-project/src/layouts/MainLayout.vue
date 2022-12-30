@@ -152,19 +152,19 @@ export default {
     }
     next();
   },
-  // beforeMount() {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user && this.$store.state.denied) {
-  //       // User is signed in.
-  //       console.log("sign in");
-  //       this.$router.push("/user/home");
-  //     } else {
-  //       // No user is signed in.
-  //       this.$router.push("/");
-  //       console.log("signout");
-  //     }
-  //   });
-  // },
+  beforeMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log("sign in");
+        this.$router.push("/user/home");
+      } else {
+        // No user is signed in.
+        this.$router.push("/");
+        console.log("signout");
+      }
+    });
+  },
 };
 </script>
 
