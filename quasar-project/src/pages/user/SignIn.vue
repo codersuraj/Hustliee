@@ -1,15 +1,15 @@
 <template>
   <div class="dark-bg page q-px-lg">
-    <div>
-      <p
+
+
+
+    <q-card class="my-card semidark-bg br-primary pa-interior">
+            <p
         v-show="this.denied"
         class="text-center text-red-4 font-regular q-mb-md"
       >
         {{ issue }}
       </p>
-    </div>
-
-    <q-card class="my-card semidark-bg br-primary pa-interior">
       <q-card-section class="q-pa-none">
         <div v-if="!verified">
           <p
@@ -78,6 +78,8 @@ export default defineComponent({
       verified: false,
       name: "",
       otp: "",
+      denied: false,
+      issue:"",
       email: "",
       formatEmail:"",
       buttonText: "Send OTP",
@@ -134,17 +136,11 @@ export default defineComponent({
     },
        async verifyOTP() {
       console.log(this.email.toLowerCase());
-      // this.formatEmail = this.email + "@kpriet.ac.in"
-      // if (typeof this.formatEmail === 'string') {
-      //   console.log(this.otp);
-      //   console.log("yeah");
-      // }
-
      await axios
         .post(
           "http://localhost:3000/verify",
           {
-            email: this.email,
+            email: this.email.toLowerCase(),
             otp: this.otp,
           },
           { headers: { "Content-Type": "application/json" } }
@@ -152,19 +148,20 @@ export default defineComponent({
 
         .then((response) => {
           console.log(response.data);
-          this.SignIn()
-          // this.$router.push("/user/home");
-          // this.output = response.data;
+          if (response.data.found) {
+              this.SignIn()
+          } else {
+            this.denied = true;
+            this.issue = "Invalid OTP"
+          }
         })
         .catch((error) => {
-          // this.$router.push("/");
           console.log(error.response.data);
           if (Object.keys(error.response.data).length <= 2) {
             this.denied = true;
             this.issue = error.response.data.error;
           }
 
-          // currentObj.output = error;
         });
     },
     async SignIn() {
@@ -178,6 +175,8 @@ export default defineComponent({
       .catch((error) => {
         console.log("outside");
         console.log(error);
+        this.denied = true
+        this.issue = "Create an user account!"
         var errorCode = error.code;
         var errorMessage = error.message;
       });

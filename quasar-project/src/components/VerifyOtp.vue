@@ -100,7 +100,12 @@ export default {
 
         .then((response) => {
           console.log(response.data);
-          this.CreateAccount(this.data.email, this.password)
+          if (response.data.found) {
+            this.CreateAccount(this.data.email, this.password)
+          } else {
+            this.denied = true;
+            this.issue = "Invalid OTP"
+          }
           // this.$router.push("/user/home");
           // this.output = response.data;
         })
