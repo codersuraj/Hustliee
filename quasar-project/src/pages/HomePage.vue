@@ -18,7 +18,7 @@
           <q-card-section class="q-pa-none">
             <p class="font-regular text-white text-center">Login as</p>
             <div style="margin-top: 15px">
-              <router-link to="/staff/login" style="text-decoration: none"
+              <router-link to="/staff/signin" style="text-decoration: none"
                 ><q-btn
                   padding="8px 0px"
                   size="25px"

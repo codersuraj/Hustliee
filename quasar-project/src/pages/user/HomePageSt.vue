@@ -9,7 +9,6 @@
             <q-input
               ref="inputRef"
               :rules="[myRule]"
-              :dense="dense"
               borderless
               v-model="name"
               readonly
@@ -23,7 +22,6 @@
             <q-input
               ref="inputRef"
               :rules="[myRule]"
-              :dense="dense"
               borderless
               v-model="rollno"
               readonly
@@ -37,7 +35,6 @@
             <q-input
               ref="inputRef"
               :rules="[myRule]"
-              :dense="dense"
               borderless
               v-model="this.class"
             >
@@ -77,7 +74,6 @@
                     <q-input
                       ref="inputRef"
                       :rules="[myRule]"
-                      :dense="dense"
                       borderless
                       v-model="this.period"
                       class="q-ml-md"
@@ -132,7 +128,6 @@
             <q-input
               ref="inputRef"
               :rules="[myRule]"
-              :dense="dense"
               borderless
               v-model="this.purpose"
             >
@@ -217,6 +212,7 @@
 </template>
 
 <script>
+import { auth } from "../../../firestore/firestore";
 import { ref } from "vue";
 import { format } from "date-fns";
 
@@ -266,6 +262,25 @@ export default {
       this.mentor = e.target.innerHTML;
     },
   },
+  beforeMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log(user.isAnonymous);
+        if (!user.isAnonymous) {
+          console.log("st home");
+          this.$router.push("/user/home")
+        } else {
+          this.$router.push("/staff/home")
+        }
+          
+      } else {
+        // No user is signed in.
+        this.$router.push("/")
+        console.log("signout");
+      }
+    });
+  }
 };
 </script>
 

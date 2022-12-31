@@ -8,7 +8,6 @@ import {
 } from 'vue-router'
 import routes from './routes'
 import {db, auth} from "../../firestore/firestore";
-import Store from '../store/store'
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;

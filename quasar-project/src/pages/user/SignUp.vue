@@ -28,7 +28,7 @@
                     :rules="[
                         val => val.length > 4 ,
                       ]"
-                    :dense="dense"
+  
                     borderless
                     autofocus
                     v-model="user_name"
@@ -192,6 +192,7 @@
                 <p class="grey-fg text-center font-small q-mt-lg">
                   Already have an account?
                 </p>
+                <router-link to="/user/signin" style="text-decoration: none">
                 <q-btn
                   icon="fa-brands fa-google"
                   padding="12px 0px"
@@ -199,8 +200,9 @@
                   class="grey-bg fw-bold button shadow-6 q-mt-md"
                   text-color="black"
                   label="Sign in"
-                  @click="SignIn()"
+                
                 />
+                </router-link>
               </div>
             </q-card-section>
           </q-card>

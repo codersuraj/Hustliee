@@ -8,13 +8,14 @@
           </q-avatar>
           <q-popup-proxy>
             <q-banner
-              style="height: inherit; width: 100%"
-              class="black-r-bg justify-center"
+              style="height: inherit; width: 100%;"
+              class="black-r-bg justify-center q-pa-md"
             >
-              <template v-slot:avatar>
+            
+              <template v-slot:avatar >
                 <div
-                  class="justify-center column items-center"
-                  style="height: 20vh; width: 300px"
+                  class="justify-center column items-center "
+                  style="height: 20vh; width: 300px;"
                 >
                   <div>
                     <q-avatar size="38px">
@@ -23,7 +24,7 @@
                   </div>
                   <div>
                     <p class="text-white q-mt-md text-center">
-                      You are logged in as 21ee038@kpriet.ac.in
+                      You are logged in as {{email}}
                     </p>
                     <q-btn
                       label="Logout"
@@ -36,6 +37,7 @@
                   </div>
                 </div>
               </template>
+              
             </q-banner>
           </q-popup-proxy>
         </q-btn>
@@ -80,28 +82,28 @@
           <q-tab name="history">
             <img
               src="../assets/diagram.svg"
-              :class="{ active: this.tab == 'history' }"
+              
               alt="History"
             />
           </q-tab>
         </router-link>
       </div>
       <div>
-        <router-link to="/staff/home" style="text-decoration: none">
+        <router-link :to="to" style="text-decoration: none">
           <q-tab name="home">
             <img
               src="../assets/home.svg"
-              :class="{ svg, active: this.tab == 'home' }"
+              
               alt="Home"
             />
           </q-tab>
         </router-link>
       </div>
-      <router-link to="/staff/home" style="text-decoration: none">
+      <router-link to="/setting" style="text-decoration: none">
         <q-tab name="settings"
           ><img
             src="../assets/setting.svg"
-            :class="{ svg, active: this.tab == 'settings' }"
+            
             alt="Settings"
         /></q-tab>
       </router-link>
@@ -126,6 +128,8 @@ export default {
   setup() {
     return {
       tab: ref("home"),
+      to: "",
+      email:"",
     };
   },
   methods: {
@@ -144,20 +148,34 @@ export default {
         });
     },
   },
-  beforeRouteLeave(to, from, next) {
-    if (to === "/history") {
-      this.tab = "history";
-    } else if (to === "/staff/home") {
-      this.tab = "home";
-    }
-    next();
+  // beforeRouteLeave(to, from, next) {
+  //   if (to === "/history") {
+  //     this.tab = "history";
+  //   } else if (to === "/staff/home") {
+  //     this.tab = "home";
+  //   }
+  //   next();
+  // },
+  mounted() {
+    
+    this.email = auth.currentUser
   },
+  
   beforeMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log("sign in");
-        this.$router.push("/user/home");
+        
+        if (user.isAnonymous) {
+          this.email = "Professor"
+          this.to = "/staff/home"
+          this.$router.push("/staff/home");
+        } else {
+          this.email = user.email
+          this.to = "/user/home"
+          this.$router.push("/user/home");
+        }
+        
       } else {
         // No user is signed in.
         this.$router.push("/");
@@ -173,16 +191,16 @@ export default {
 
 .route-enter-from {
   opacity: 0;
-  transform: translateX(100px);
+  transform: translateY(100px);
 }
 
 .route-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .route-leave-to {
   opacity: 0;
-  transform: translateX(-100px);
+  transform: translateY(-100px);
 }
 
 .title-text {

@@ -80,6 +80,11 @@ export default {
   props: {
     item: Object,
   },
+  data() {
+    return {
+    otp:""
+   } 
+  },
   methods: {
     cardstyle(status) {
       let className = "";

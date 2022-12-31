@@ -37,6 +37,7 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { db, auth } from "../../firestore/firestore";
+import { mapActions } from "vuex";
 
 import axios from "axios";
 export default {
@@ -60,8 +61,12 @@ export default {
       // obj: {email: "", otp:""}
     };
   },
+    computed: {
+		...mapActions('tasks', ['updateTask']),
+	},
 
   methods: {
+  
     submitForm() {
       if ((this.otp == "" || this.otp.length < 6)) {
         this.denied = true;
@@ -131,6 +136,9 @@ export default {
       // Signed in 
       console.log(userCredential);
       var user = userCredential.user;
+      console.log(user.uid);
+      this.AddDocument(user.uid)
+      
       // ...
     })
        .catch((error) => {
@@ -144,21 +152,26 @@ export default {
       var errorMessage = error.message;
       // ..
     });
+    },
+    AddDocument(uid) {
+      db.collection("students").doc(uid).set({
+        name: this.data.name,
+        roll_no: this.data.roll_no,
+        section: this.data.section,
+        year: this.data.year,
+        email: this.data.email,
+        dept: this.data.dept
+      
+      })
+        .then((docRef) => {
+        console.log("Document written with ID: ", docRef);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
     }
   },
-  beforeUnmount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in.
-        console.log("sign in");
-        this.$router.push("/user/home");
-      } else {
-        // No user is signed in.
-        this.$router.push("/");
-        console.log("signout");
-      }
-    });
-  },
+
 };
 </script>
 

@@ -1,4 +1,5 @@
-import {db, auth} from "../../firestore/firestore";
+import firebase from "firebase";
+import router from ".";
 
 
 const routes = [
@@ -32,22 +33,13 @@ const routes = [
                 meta: {
                     auth: false
                 }
-            },
-            {
-                path: '/staff/login',
-                component: () => import ('src/pages/admin/LoginPage.vue'),
-                meta: {
-                    auth: false
-                }
-            },
-            {
+            }, {
                 path: '/staff/signin',
                 component: () => import ('src/pages/admin/SignIn.vue'),
                 meta: {
                     auth: false
                 }
-            },
-            {
+            }, {
                 path: '/user/signup',
                 component: () => import ('src/pages/user/SignUp.vue'),
                 meta: {
@@ -75,7 +67,8 @@ const routes = [
                 path: '/staff/home',
                 component: () => import ('src/pages/admin/HomePage.vue'),
                 meta: {
-                    auth: true
+                    auth: true,
+                    admin: true
                 }
             }, {
                 path: '/history',
@@ -101,20 +94,21 @@ const routes = [
     }
 ]
 
-// routes.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
 
-//     auth.onAuthStateChanged((user) => {
-//         if (user) { // User is signed in.
-//             if (to.meta.auth) {
-//                 console.log('out be');
-//                 next(to);
-//             } else if (!to.meta.auth) {
-//                 next('user/home')
-//             } else { // No user is signed in.
-//                 next("/")
-//             }
+
+// auth.onAuthStateChanged((user) => {
+//     if (user) { // User is signed in.
+//         if (to.meta.auth) {
+//             console.log('out be');
+//             next(to);
+//         } else if (!to.meta.auth) {
+//             next('user/home')
+//         } else { // No user is signed in.
+//             next("/")
 //         }
-//     })
+//     }
+// })
 
 // })
 

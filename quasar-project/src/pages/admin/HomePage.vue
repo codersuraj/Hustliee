@@ -138,6 +138,7 @@
 import OverallStatus from "../../components/OverallStatus.vue";
 import InfoCard from "../../components/InfoCard.vue";
 import { ref } from "vue";
+import { auth } from "../../../firestore/firestore";
 
 export default {
   components: { OverallStatus, InfoCard },
@@ -190,6 +191,24 @@ export default {
       option: ref("pending"),
     };
   },
+    beforeMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log(user.isAnonymous);
+        if (user.isAnonymous) {
+          this.$router.push("/staff/home")
+        } else {
+          this.$router.push("/user/home")
+        }
+          
+      } else {
+        // No user is signed in.
+        this.$router.push("/")
+        console.log("signout");
+      }
+    });
+  }
 };
 </script>
 
