@@ -266,8 +266,8 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log(user.isAnonymous);
-        if (!user.isAnonymous) {
+        console.log(user.displayName != null);
+        if (user.displayName == null) {
           console.log("st home");
           this.$router.push("/user/home")
         } else {

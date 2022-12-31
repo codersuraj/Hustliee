@@ -12,7 +12,7 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        if (user.isAnonymous) {
+        if (user.displayName != null) {
           this.$router.push("/staff/home");
         } else {
           this.$router.push("/user/home");

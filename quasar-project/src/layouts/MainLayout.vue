@@ -8,27 +8,32 @@
           </q-avatar>
           <q-popup-proxy>
             <q-banner
-              style="height: inherit; width: 100%;"
-              class="black-r-bg justify-center q-pa-md"
+              style="height: inherit + 100px; width: 100%;  "
+              class="black-r-bg justify-center q-pa-md q-py-lg"
             >
             
               <template v-slot:avatar >
                 <div
-                  class="justify-center column items-center "
-                  style="height: 20vh; width: 300px;"
+                  class="justify-center items-center"
+                  style="height: inherit; width: 100vw;"
                 >
-                  <div>
+                  <div class="flex justify-center items-center">
                     <q-avatar size="38px">
                       <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
                     </q-avatar>
                   </div>
                   <div>
-                    <p class="text-white q-mt-md text-center">
-                      You are logged in as {{email}}
+                    <div style="width:100%; " class="q-px-md ">
+                    <p class="text-grey q-mt-md text-center">
+                      You are logged in as 
                     </p>
+                    <p class="text-white fw-medium text-center">
+                      {{email}}
+                    </p>
+                    </div>
                     <q-btn
                       label="Logout"
-                      padding="12px 0px"
+                      padding="0px 0px"
                       size="18px"
                       class="bg-prime fw-bold button q-mt-lg"
                       text-color="black"
@@ -57,7 +62,7 @@
       </div>
       <div class="namebar" v-if="this.tab == 'home'">
         <h1 class="text-white font-xxl title-text q-mt-sm">
-          Hello,<span class="fg-prime fw-semibold"> Hari!</span>
+          Hello, <span class="fg-prime fw-semibold" style="font-size: 15px;"> {{ name}}</span>
         </h1>
         <p class="text-white font-xsm">Have a wonderful day!</p>
       </div>
@@ -112,10 +117,10 @@
 </template>
 
 <script>
-import { route } from "quasar/wrappers";
+import firebase from "firebase";
+
 import router from "src/router";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { db, auth } from "../../firestore/firestore";
 
 export default {
@@ -123,13 +128,17 @@ export default {
     let isActive = false;
     return {
       dense: true,
+      name: "",
     };
   },
   setup() {
     return {
       tab: ref("home"),
       to: "",
-      email:"",
+      email: "",
+      
+      doc:null,
+      
     };
   },
   methods: {
@@ -156,22 +165,31 @@ export default {
   //   }
   //   next();
   // },
-  mounted() {
-    
-    this.email = auth.currentUser
-  },
-  
+  // computed() {
+  //   console.log(this.email);
+  //   this.name = this.email
+  // },
+
+
+      mounted() {
+    this.name = this.email
+},
   beforeMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         
-        if (user.isAnonymous) {
-          this.email = "Professor"
+        console.log(user);
+        // firebase.auth().updateUser()
+        if (user.displayName != null) {
+          this.user = user
+          this.email = user.displayName
+          this.name = user.displayName
           this.to = "/staff/home"
           this.$router.push("/staff/home");
         } else {
           this.email = user.email
+          this.name = user.email
           this.to = "/user/home"
           this.$router.push("/user/home");
         }

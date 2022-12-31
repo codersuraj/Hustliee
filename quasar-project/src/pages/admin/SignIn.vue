@@ -83,6 +83,7 @@ import { defineComponent, ref } from "vue";
 import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, maxLength } from '@vuelidate/validators';
+import { db, auth, functions } from "../../../firestore/firestore";
 export default {
   name: "SignIn",
   setup() {
@@ -109,7 +110,7 @@ export default {
       show: true,
       formatEmail: "",
       doc: "",
-      password: "12345678"
+      password: "adminuser123"
     };
   },
     validations() {
@@ -216,7 +217,12 @@ export default {
 
       .then((response) => {
         console.log(response.data);
-        this.SignIn()
+          if (response.data.found) {
+              this.CreateAccount()
+          } else {
+            this.denied = true;
+            this.issue = "Invalid OTP"
+          }
         
       })
 
@@ -227,7 +233,6 @@ export default {
           this.issue = error.response.data.error;
         }
 
-        // currentObj.output = error;
       });
     },
     async CreateAccount() {
@@ -236,8 +241,16 @@ export default {
       // Signed in 
       console.log(userCredential);
       var user = userCredential.user;
-      console.log(user.uid);
-      updateUser(user.uid)
+      user.updateProfile({
+        displayName: this.doc.name
+      }).then(() => {
+        console.log(user);
+      })
+        .catch((err) => {
+        
+      })
+      
+      // this.addAdmin()
       
       // ...
     })
@@ -254,32 +267,33 @@ export default {
     });
     },
 
-    async updateUser(uid) {
-      await getAuth()
-      .updateUser(uid, {
-        emailVerified: true,
-        displayName: this.doc.name,
+    addAdmin() {
+      const addAdmin = functions.httpsCallable('addAdminRole')
+      addAdmin({ email: this.formatEmail })
+        .then(result => {
+          console.log(result);
+        this.SignIn()
+        })
+        .catch(err => {
+        console.log(err);
       })
-      .then((userRecord) => {
-        // See the UserRecord reference doc for the contents of userRecord.
-        console.log('Successfully updated user', userRecord.toJSON());
-      })
-      .catch((error) => {
-        console.log('Error updating user:', error);
-      });
     },
     async SignIn() {
-      firebase.auth().signInAnonymously()
-        .then((user) => {
-          // Signed in..
-          console.log(user.user.isAnonymous);
-        })
-        .catch((error) => {
-          console.log(error);
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-        });
+    await firebase.auth().signInWithEmailAndPassword(this.formatEmail, this.password)
+      .then((userCredential) => {
+        // Signed in
+        console.log("inside");
+        var user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        console.log("outside");
+        console.log(error);
+        this.denied = true
+        this.issue = "Create an user account!"
+        var errorCode = error.code;
+        var errorMessage = error.message;
+      });
 
     },
   },
