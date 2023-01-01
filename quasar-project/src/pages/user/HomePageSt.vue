@@ -10,7 +10,7 @@
               ref="inputRef"
               :rules="[myRule]"
               borderless
-              v-model="name"
+              v-model="data.name"
               readonly
             >
             </q-input>
@@ -23,7 +23,7 @@
               ref="inputRef"
               :rules="[myRule]"
               borderless
-              v-model="rollno"
+              v-model="data.roll_no"
               readonly
             >
             </q-input>
@@ -33,10 +33,9 @@
         <div class="q-mt-sm">
           <div class="q-px-md black-r-bg input br-secondary">
             <q-input
-              ref="inputRef"
               :rules="[myRule]"
               borderless
-              v-model="this.class"
+              v-model="section"
             >
             </q-input>
           </div>
@@ -124,11 +123,12 @@
         </div>
         <p class="font-xsm fw-medium text-white text-start q-mt-md">Purpose</p>
         <div class="q-mt-sm">
-          <div class="q-px-md black-r-bg input br-secondary">
+          <div class="q-px-md black-r-bg br-secondary q-mt-md">
             <q-input
               ref="inputRef"
               :rules="[myRule]"
               borderless
+              autogrow
               v-model="this.purpose"
             >
             </q-input>
@@ -137,9 +137,9 @@
         <p class="font-xsm fw-medium text-white text-start q-mt-md">Mentor</p>
         <div class="q-mt-md">
           <q-btn-dropdown
-            padding="0px 0px"
-            size="18px"
-            class="black-r-bg button font-semi-medium text-white dept-btn"
+            padding="4px 0px"
+            size="14px"
+            class="black-r-bg button fw-xsm text-white dept-btn"
             no-caps
             :label="this.mentor"
             icon=""
@@ -152,13 +152,13 @@
               <q-item
                 clickable
                 v-close-popup
-                @click="onItemClick"
+                @click="mentorClick"
                 class="button"
                 v-for="item in faculty_list"
                 :key="item"
               >
-                <q-item-section>
-                  <q-item-label>{{ item }}</q-item-label>
+                <q-item-section class="fw-xsm">
+                  <q-item-label>{{ item.name }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -169,11 +169,11 @@
         </p>
         <div class="q-mt-md">
           <q-btn-dropdown
-            padding="0px 0px"
-            size="18px"
-            class="black-r-bg button font-semi-medium text-white dept-btn"
+            padding="4px 0px"
+            size="14px"
+            class="black-r-bg button text-white dept-btn"
             no-caps
-            :label="this.chief_mentor"
+            :label="this.chiefMentor"
             icon=""
             dropdown-icon="none"
             ref="inputRef"
@@ -184,13 +184,13 @@
               <q-item
                 clickable
                 v-close-popup
-                @click="onItemClick"
+                @click="chiefMentorClick"
                 class="button"
                 v-for="item in faculty_list"
                 :key="item"
               >
                 <q-item-section>
-                  <q-item-label>{{ item }}</q-item-label>
+                  <q-item-label>{{ item.name }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -212,33 +212,35 @@
 </template>
 
 <script>
-import { auth } from "../../../firestore/firestore";
+import {db, auth } from "../../../firestore/firestore";
 import { ref } from "vue";
+import firebase from "firebase";
 import { format } from "date-fns";
 
 export default {
   data() {
     return {
-      class: "",
-      period: "",
-      purpose: "",
-      mentor: "",
+      name: "",
+      rollno: "",
+      data: "",
+      section: "",
+      expiresIn:null,
       chief_mentor: "",
-      faculty_list: ["EEE", "ECE", "CSE", "CE", "CH", "AD", "BME", "MECH"],
+      faculty_list: [],
+      mentor: "",
+      chiefMentor:"",
     };
   },
   setup() {
     const inputRef = ref(null);
     return {
-      name: ref("Hariharan C"),
-      rollno: ref("21EE038"),
       model: ref(""),
       year: ref(""),
       dept_name: ref(""),
       inputRef,
       panel: ref("less_than"),
-      date: ref(1666682832151),
-      qdate: ref({ from: "2022/07/08", to: "2022/07/17" }),
+      date: ref(Date.now()),
+      qdate: ref({ from: "", to: "" }),
       myRule(val) {
         // simulating a delay
 
@@ -257,10 +259,75 @@ export default {
       };
     },
   },
+  watch: {
+    qdate(newDate, oldDate) {
+      if (newDate) {
+        this.Dateformat(newDate)
+      } else {
+        this.Dateformat(oldDate)
+      }
+    },
+
+  },
   methods: {
-    onItemClick(e) {
+    mentorClick(e) {
       this.mentor = e.target.innerHTML;
     },
+    chiefMentorClick(e) {
+      this.chiefMentor = e.target.innerHTML;
+    },
+    async getUserData() {
+      var docRef = db.collection("students").doc(firebase.auth().currentUser.uid);
+
+      await docRef.get().then((doc) => {
+          if (doc.exists) {
+            console.log("Document data:", doc.data());
+            this.data = doc.data()
+            this.section = this.data.dept + "-" + this.data.section
+            console.log(this.data);
+              this.getMentors()
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+    },
+    Dateformat(date) {
+      console.log(date.to);
+      let Todate = date.to
+      const mydate = Todate.split("/");
+      let newDate = `${mydate[0]}-${mydate[1]}-${mydate[2]} 0:0:0.0`
+      var millis = Date.parse(newDate);
+      this.expiresIn = millis - Date.now()
+      console.log(this.expiresIn);
+      if (this.expiresIn < 0) {
+        
+      }
+      setTimeout(this.odExpired(), this.expiresIn);
+      
+
+    },
+    getMentors() {
+      this.faculty_list = []
+      db.collection("staffs").where("dept", "==", "EEE")
+        .onSnapshot((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            var mentor = { id: doc.id, name: doc.data().name }
+          
+          this.faculty_list.push(mentor);
+          
+          });
+        console.log(this.faculty_list);
+    });
+    }
+  },
+  mounted: function mounted() {
+    
+      if(this.data != "") {
+        
+    }
   },
   beforeMount() {
     auth.onAuthStateChanged((user) => {
@@ -268,6 +335,7 @@ export default {
         // User is signed in.
         console.log(user.displayName != null);
         if (user.displayName == null) {
+          this.getUserData()
           console.log("st home");
           this.$router.push("/user/home")
         } else {

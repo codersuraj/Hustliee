@@ -195,6 +195,7 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
+        this.$emit()
         console.log(user.displayName != null);
         if (user.displayName != null) {
           this.$router.push("/staff/home")

@@ -16,7 +16,10 @@
         </p>
         <div class="q-mt-md q-px-md">
           <div class="q-px-md grey-bg input br-secondary q-pb-xl center">
-            <q-input borderless v-model="otp" autofocus  />
+            <q-input borderless v-model="otp" autofocus maxlength="6"
+              :rules="[
+                val => val.length >= 6 ,
+              ]" />
           </div>
         </div>
         <div style="margin-top: 46px">
@@ -35,6 +38,7 @@
 </template>
 
 <script>
+import { defineComponent, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { db, auth } from "../../firestore/firestore";
 import { mapActions } from "vuex";
@@ -45,6 +49,18 @@ export default {
   props: {
     data: {
       type: Object
+    }
+  },
+  setup() {
+    const inputRef = ref(null)
+
+    return {
+      model: ref(''),
+      inputRef,
+
+      reset() {
+        inputRef.value.resetValidation()
+      }
     }
   },
   data() {
